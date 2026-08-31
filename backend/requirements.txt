@@ -1,0 +1,48 @@
+# Core Django & REST API
+django==6.0.2
+djangorestframework==3.16.1
+django-cors-headers==4.9.0
+
+# Environment & config
+python-dotenv==1.2.1
+
+# Database (PostgreSQL driver - binary for faster Docker builds)
+psycopg2-binary==2.9.11
+
+# HTTP & parsing (RSS + web scraping)
+requests==2.32.5
+feedparser==6.0.12
+beautifulsoup4==4.14.3
+
+# Email validation & extraction
+email-validator==2.3.0
+
+# Phone number validation
+phonenumbers==9.0.24
+
+# Celery integration (task queue + scheduler)
+celery[redis]==5.6.2
+django-celery-beat==2.9.0
+redis==6.4.0
+
+# Data processing
+pandas==3.0.0
+
+# Production server
+gunicorn==25.1.0
+
+# Development helpers (not in production)
+django-debug-toolbar==6.2.0
+
+# APIs
+serpapi==0.1.5
+apify-client==3.1.2
+
+# DNS lookups
+dnspython==2.8.0
+
+# Rate limiting
+django-ratelimit==4.1.0
+
+# Location extraction
+geograpy3==0.3.0

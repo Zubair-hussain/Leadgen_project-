@@ -1,0 +1,6 @@
+
+# Environment files
+.env
+**/.env
+key.txt
+*.rar

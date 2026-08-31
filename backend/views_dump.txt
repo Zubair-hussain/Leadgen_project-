@@ -1,0 +1,71 @@
+﻿# views.py
+from django.http import JsonResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Lead
+from .serializers import LeadSerializer
+import base64
+import csv
+from io import StringIO
+
+# Simple hello world view for testing
+def hello_world(request):
+    return JsonResponse({"message": "Hello from Lead Gen API!"})
+
+# Placeholder for lead generation logic
+def generate_leads_from_sources(category, problem, platforms):
+    # TODO: Implement your lead generation logic here
+    return []
+
+class LeadListView(APIView):
+    def get(self, request):
+        leads = Lead.objects.all().order_by('-created_at')
+        serializer = LeadSerializer(leads, many=True)
+        return Response(serializer.data)
+
+class GenerateLeadsView(APIView):
+    def post(self, request):
+        category = request.data.get('category')
+        problem = request.data.get('problem_statement')
+        platforms = request.data.get('platforms', [])
+
+        if not category:
+            return Response({"error": "category required"}, status=400)
+
+        # Your core logic here â†“
+        generated_leads = generate_leads_from_sources(category, problem, platforms)
+
+        # Save new leads (skip duplicates)
+        saved_count = 0
+        for lead_data in generated_leads:
+            email = lead_data.get('email')
+            if email and not Lead.objects.filter(email=email).exists():
+                Lead.objects.create(
+                    email=email,
+                    phone=lead_data.get('phone', ''),
+                    source=lead_data.get('source', 'unknown'),
+                    category=category,
+                    service=category,  # Also populate service
+                    location=lead_data.get('location', ''),
+                    link=lead_data.get('link', ''),
+                    problem_statement=problem
+                )
+                saved_count += 1
+
+        # Build CSV
+        output = StringIO()
+        writer = csv.writer(output)
+        writer.writerow(["Email", "Phone", "Source", "Category", "Context"])
+        for lead in generated_leads:
+            writer.writerow([
+                lead.get('email', ''),
+                lead.get('phone', ''),
+                lead.get('source', ''),
+                category,
+                problem
+            ])
+        csv_string = output.getvalue()
+        base64_csv = base64.b64encode(csv_string.encode('utf-8')).decode('utf-8')
+
+        return Response(base64_csv, status=200)
