@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="a2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#6B7872"/>
+    </marker>
+    <style>
+      .net{fill:#EEF2EF;stroke:#CBD5CE;stroke-dasharray:6 4;rx:16;}
+      .box{fill:#FFFFFF;stroke:#CBD5CE;stroke-width:1.5;rx:12;}
+      .acc{fill:#E6F2F0;stroke:#087F74;stroke-width:1.5;rx:12;}
+      .db{fill:#FBF3E4;stroke:#B98221;stroke-width:1.5;rx:12;}
+      .t{fill:#101815;font-size:14px;font-weight:600;}
+      .s{fill:#6B7872;font-size:11.5px;}
+      .lbl{fill:#6B7872;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
+      .edge{stroke:#6B7872;stroke-width:1.6;fill:none;marker-end:url(#a2);}
+      .port{fill:#087F74;font-size:11px;font-weight:600;}
+    </style>
+  </defs>
+  <rect x="0" y="0" width="960" height="560" fill="#F6F7F5"/>
+  <text x="32" y="40" fill="#101815" font-size="22" font-weight="700">Deployment &amp; Infrastructure (docker-compose)</text>
+
+  <!-- Internet / user -->
+  <rect class="box" x="380" y="64" width="200" height="52" rx="12"/>
+  <text class="t" x="452" y="88" text-anchor="middle">Browser</text>
+  <text class="s" x="452" y="105" text-anchor="middle">HTTPS</text>
+
+  <!-- Reverse proxy -->
+  <rect class="acc" x="360" y="150" width="240" height="56" rx="12"/>
+  <text class="t" x="480" y="174" text-anchor="middle">HTTPS reverse proxy</text>
+  <text class="s" x="480" y="192" text-anchor="middle">TLS termination · secure headers</text>
+
+  <!-- Docker network -->
+  <rect class="net" x="40" y="240" width="880" height="280" rx="16"/>
+  <text class="lbl" x="60" y="266">leadgen_network (docker bridge)</text>
+
+  <!-- frontend -->
+  <rect class="box" x="70" y="288" width="220" height="80" rx="12"/>
+  <text class="t" x="86" y="316">frontend</text>
+  <text class="s" x="86" y="336">nginx · Next.js static export</text>
+  <text class="port" x="86" y="356">127.0.0.1:5173 → :80</text>
+
+  <!-- api -->
+  <rect class="acc" x="330" y="288" width="220" height="80" rx="12"/>
+  <text class="t" x="346" y="316">backend (api)</text>
+  <text class="s" x="346" y="336">gunicorn · Django REST</text>
+  <text class="port" x="346" y="356">127.0.0.1:8000 → :8000</text>
+
+  <!-- worker -->
+  <rect class="box" x="330" y="408" width="220" height="72" rx="12"/>
+  <text class="t" x="346" y="436">worker</text>
+  <text class="s" x="346" y="456">Celery · async lead gen</text>
+
+  <!-- db -->
+  <rect class="db" x="600" y="288" width="150" height="80" rx="12"/>
+  <text class="t" x="616" y="316">postgres</text>
+  <text class="s" x="616" y="336">internal only</text>
+  <text class="s" x="616" y="354">:5432</text>
+
+  <!-- redis -->
+  <rect class="db" x="770" y="288" width="120" height="80" rx="12"/>
+  <text class="t" x="786" y="316">redis</text>
+  <text class="s" x="786" y="336">broker</text>
+  <text class="s" x="786" y="354">:6379</text>
+
+  <!-- edges -->
+  <path class="edge" d="M480,116 L480,150"/>
+  <path class="edge" d="M420,206 C420,250 180,250 180,288"/>
+  <path class="edge" d="M480,206 C480,250 440,250 440,288"/>
+  <path class="edge" d="M550,328 L600,328"/>
+  <path class="edge" d="M550,344 C700,344 760,344 770,338 L775,330"/>
+  <path class="edge" d="M440,408 L440,368"/>
+  <path class="edge" d="M560,444 C680,444 700,380 700,368"/>
+  <path class="edge" d="M560,428 C820,428 830,380 830,368"/>
+
+  <text class="s" x="60" y="504">Ports are bound to 127.0.0.1 only; postgres and redis are never published to the host. NEXT_PUBLIC_* values are baked at frontend build time.</text>
+</svg>
