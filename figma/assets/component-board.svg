@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="980" viewBox="0 0 1440 980" role="img" aria-labelledby="title desc">
+  <title id="title">Component board</title>
+  <desc id="desc">Visual component board for buttons, fields, chips, cards, alerts, and table rows.</desc>
+  <rect width="1440" height="980" fill="#F7F5EF"/>
+  <text x="96" y="112" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="850">LeadGen AI Components</text>
+  <text x="96" y="162" fill="#5C6874" font-family="Inter, Arial, sans-serif" font-size="22">Foundations for landing page and authenticated app screens.</text>
+  <g transform="translate(96 230)">
+    <text x="0" y="0" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">Buttons</text>
+    <rect x="0" y="36" width="176" height="56" rx="28" fill="#C8141E"/>
+    <text x="40" y="72" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="800">Primary</text>
+    <rect x="200" y="36" width="190" height="56" rx="28" fill="#17212B"/>
+    <text x="244" y="72" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="800">Secondary</text>
+    <rect x="414" y="36" width="152" height="56" rx="28" fill="#FFFFFF" stroke="#CED6D8"/>
+    <text x="456" y="72" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="800">Ghost</text>
+  </g>
+  <g transform="translate(96 390)">
+    <text x="0" y="0" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">Inputs</text>
+    <rect x="0" y="36" width="370" height="58" rx="12" fill="#FFFFFF" stroke="#CED6D8"/>
+    <text x="20" y="72" fill="#5C6874" font-family="Inter, Arial, sans-serif" font-size="17">Niche or buyer segment</text>
+    <rect x="400" y="36" width="370" height="58" rx="12" fill="#FFFFFF" stroke="#C8141E" stroke-width="2"/>
+    <text x="420" y="72" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="17">SaaS agencies</text>
+  </g>
+  <g transform="translate(96 550)">
+    <text x="0" y="0" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">Status chips</text>
+    <rect x="0" y="36" width="112" height="38" rx="19" fill="#E9F5EF"/>
+    <text x="32" y="61" fill="#2F7D62" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800">Valid</text>
+    <rect x="132" y="36" width="112" height="38" rx="19" fill="#FFF3D6"/>
+    <text x="160" y="61" fill="#8A6B18" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800">Risky</text>
+    <rect x="264" y="36" width="112" height="38" rx="19" fill="#FBE5E7"/>
+    <text x="286" y="61" fill="#C8141E" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800">Invalid</text>
+  </g>
+  <g transform="translate(760 230)">
+    <text x="0" y="0" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">Lead row</text>
+    <rect x="0" y="36" width="520" height="92" rx="16" fill="#FFFFFF" stroke="#D9DDD7"/>
+    <text x="24" y="74" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800">Apex Growth</text>
+    <text x="24" y="102" fill="#5C6874" font-family="Inter, Arial, sans-serif" font-size="15">ops@apex.example</text>
+    <rect x="384" y="62" width="90" height="32" rx="16" fill="#E9F5EF"/>
+    <text x="408" y="84" fill="#2F7D62" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="800">Valid</text>
+  </g>
+  <g transform="translate(760 410)">
+    <text x="0" y="0" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">Metric card</text>
+    <rect x="0" y="36" width="260" height="150" rx="18" fill="#FFFFFF" stroke="#D9DDD7"/>
+    <text x="24" y="82" fill="#5C6874" font-family="Inter, Arial, sans-serif" font-size="15">Average confidence</text>
+    <text x="24" y="138" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="850">86%</text>
+  </g>
+  <g transform="translate(760 660)">
+    <text x="0" y="0" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">Alert</text>
+    <rect x="0" y="36" width="520" height="92" rx="16" fill="#FFF3D6" stroke="#E8D08D"/>
+    <text x="24" y="76" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800">DNS setup needs attention</text>
+    <text x="24" y="104" fill="#6B5A1B" font-family="Inter, Arial, sans-serif" font-size="15">DMARC policy is missing for this sender domain.</text>
+  </g>
+</svg>
