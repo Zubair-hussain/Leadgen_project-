@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+  <style>
+    .bg{fill:#FFFFFF}.card{fill:#F8FAF8;stroke:#D3D9D4;stroke-width:1.4;rx:12}
+    .field{fill:#FFFFFF;stroke:#CBD2CC;stroke-width:1.2;rx:8}
+    .cta{fill:#0F7F74;rx:10}.ctat{fill:#fff;font-size:13px;font-weight:600}
+    .h{fill:#101815;font-weight:700}.t{fill:#3C433E;font-size:12.5px}.s{fill:#8A938C;font-size:11px}
+    .cap{fill:#6B7872;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+    .lbl{fill:#6B7872;font-size:10.5px;font-weight:600}
+  </style>
+  <rect class="bg" width="900" height="560"/>
+  <rect x="0" y="0" width="900" height="46" fill="#F4F6F5"/>
+  <text class="cap" x="24" y="29">Wireframe — Sender / Deliverability tab</text>
+
+  <!-- left: policy checker -->
+  <rect class="card" x="40" y="66" width="470" height="200"/>
+  <text class="h" x="62" y="96">Sender identity</text>
+  <rect x="420" y="80" width="70" height="22" rx="11" fill="#E7F3EA"/>
+  <text class="s" x="432" y="95" fill="#147D52">✓ Active</text>
+  <text class="s" x="62" y="118">sender@example.com · Gmail SMTP · verified-only</text>
+  <text class="s" x="62" y="150">Verified Leads · Smart Queue · Policy Check</text>
+  <rect class="field" x="62" y="168" width="426" height="76" fill="#EEF3F0"/>
+  <text class="s" x="78" y="192">Only valid-syntax, active-MX addresses enter the pool.</text>
+
+  <rect class="card" x="40" y="278" width="470" height="242"/>
+  <text class="h" x="62" y="308">Deliverability Policy Checker</text>
+  <text class="s" x="62" y="326">Sender DNS, authentication, and campaign risk scan</text>
+  <text class="lbl" x="62" y="352">SUBJECT</text>
+  <rect class="field" x="62" y="358" width="250" height="34"/>
+  <text class="lbl" x="330" y="352">DAILY VOLUME</text>
+  <rect class="field" x="330" y="358" width="158" height="34"/>
+  <text class="lbl" x="62" y="410">DKIM SELECTORS</text>
+  <rect class="field" x="62" y="416" width="426" height="34"/>
+  <text class="lbl" x="62" y="468">SAMPLE BODY</text>
+  <rect class="field" x="62" y="474" width="300" height="34"/>
+  <rect class="cta" x="374" y="474" width="114" height="34"/>
+  <text class="ctat" x="431" y="496" text-anchor="middle">🛡 Run Check</text>
+
+  <!-- right: results -->
+  <rect class="card" x="530" y="66" width="330" height="200"/>
+  <text class="h" x="552" y="96">Sender Settings</text>
+  <text class="s" x="552" y="124">Provider           Gmail SMTP</text>
+  <text class="s" x="552" y="148">Default from      sender@example.com</text>
+  <text class="s" x="552" y="172">Lead filter         Verified only</text>
+  <text class="s" x="552" y="196">Batch mode       Enabled</text>
+
+  <rect class="card" x="530" y="278" width="330" height="242"/>
+  <text class="h" x="552" y="308">Inbox Risk</text>
+  <circle cx="600" cy="372" r="42" fill="none" stroke="#E3E8E4" stroke-width="10"/>
+  <circle cx="600" cy="372" r="42" fill="none" stroke="#147D52" stroke-width="10" stroke-dasharray="205 264" transform="rotate(-90 600 372)"/>
+  <text x="600" y="378" text-anchor="middle" font-size="20" font-weight="700" fill="#101815">82</text>
+  <rect x="668" y="352" width="78" height="22" rx="11" fill="#E7F3EA"/>
+  <text class="s" x="680" y="367" fill="#147D52">Low Risk</text>
+  <text class="s" x="668" y="398">Likely inbox</text>
+  <text class="t" x="552" y="440">✓ SPF   ✓ DMARC   ⚠ DKIM   ✓ TLS</text>
+  <text class="lbl" x="552" y="470">⚡ FIX NEXT</text>
+  <text class="s" x="552" y="490">Add DMARC p=quarantine · publish DKIM selector</text>
+  <text class="s" x="552" y="508">Posts /api/deliverability/check/</text>
+</svg>
