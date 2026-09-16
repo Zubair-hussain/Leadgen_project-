@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1200" viewBox="0 0 1440 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Landing page desktop mockup</title>
+  <desc id="desc">Desktop visual handoff for the LeadGen AI landing page with animated hero word pill.</desc>
+  <rect width="1440" height="1200" fill="#F7F5EF"/>
+  <rect width="1440" height="92" fill="#FFFFFF"/>
+  <text x="96" y="58" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="800">LeadGen AI</text>
+  <text x="704" y="58" fill="#5C6874" font-family="Inter, Arial, sans-serif" font-size="16">Product</text>
+  <text x="800" y="58" fill="#5C6874" font-family="Inter, Arial, sans-serif" font-size="16">Security</text>
+  <text x="904" y="58" fill="#5C6874" font-family="Inter, Arial, sans-serif" font-size="16">Pricing</text>
+  <rect x="1172" y="24" width="172" height="44" rx="22" fill="#17212B"/>
+  <text x="1210" y="53" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700">Open app</text>
+  <text x="96" y="252" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="88" font-weight="850">Start</text>
+  <rect x="334" y="178" width="348" height="100" rx="50" fill="#C8141E"/>
+  <text x="408" y="245" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="62" font-weight="850">meeting</text>
+  <text x="714" y="252" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="88" font-weight="850">buyers.</text>
+  <text x="100" y="342" fill="#5C6874" font-family="Inter, Arial, sans-serif" font-size="26">Find, verify, and prioritize B2B leads with authenticated workflows and owner-scoped data.</text>
+  <rect x="100" y="416" width="208" height="60" rx="30" fill="#C8141E"/>
+  <text x="136" y="455" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800">Generate leads</text>
+  <rect x="326" y="416" width="184" height="60" rx="30" fill="#FFFFFF" stroke="#CED6D8"/>
+  <text x="362" y="455" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800">View demo</text>
+  <g transform="translate(782 354)">
+    <rect width="466" height="346" rx="26" fill="#FFFFFF" stroke="#D9DDD7"/>
+    <rect x="32" y="30" width="174" height="18" rx="9" fill="#17212B"/>
+    <rect x="32" y="72" width="390" height="44" rx="12" fill="#F1EDE4"/>
+    <rect x="32" y="140" width="120" height="116" rx="16" fill="#C8141E" opacity=".9"/>
+    <rect x="174" y="140" width="120" height="116" rx="16" fill="#C9A84C"/>
+    <rect x="316" y="140" width="120" height="116" rx="16" fill="#2F7D62"/>
+    <rect x="32" y="282" width="390" height="18" rx="9" fill="#DDE3E8"/>
+  </g>
+  <rect x="96" y="820" width="1248" height="268" rx="28" fill="#FFFFFF"/>
+  <text x="136" y="888" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800">Core workflow</text>
+  <rect x="136" y="936" width="242" height="92" rx="16" fill="#F1EDE4"/>
+  <rect x="414" y="936" width="242" height="92" rx="16" fill="#F1EDE4"/>
+  <rect x="692" y="936" width="242" height="92" rx="16" fill="#F1EDE4"/>
+  <rect x="970" y="936" width="242" height="92" rx="16" fill="#F1EDE4"/>
+  <text x="162" y="992" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="750">Discover</text>
+  <text x="440" y="992" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="750">Verify</text>
+  <text x="718" y="992" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="750">Export</text>
+  <text x="996" y="992" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="750">Improve</text>
+</svg>
