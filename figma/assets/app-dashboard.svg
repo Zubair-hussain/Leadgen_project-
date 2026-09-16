@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1024" viewBox="0 0 1440 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Application dashboard mockup</title>
+  <desc id="desc">Figma-ready app dashboard visual showing sidebar, generator, metrics, and leads table.</desc>
+  <rect width="1440" height="1024" fill="#EEF1F2"/>
+  <rect x="0" y="0" width="270" height="1024" fill="#17212B"/>
+  <text x="36" y="64" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">LeadGen AI</text>
+  <rect x="24" y="122" width="222" height="46" rx="10" fill="#C8141E"/>
+  <text x="58" y="153" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700">Dashboard</text>
+  <text x="58" y="220" fill="#AEB7BD" font-family="Inter, Arial, sans-serif" font-size="16">Generator</text>
+  <text x="58" y="274" fill="#AEB7BD" font-family="Inter, Arial, sans-serif" font-size="16">Leads</text>
+  <text x="58" y="328" fill="#AEB7BD" font-family="Inter, Arial, sans-serif" font-size="16">Verifier</text>
+  <text x="58" y="382" fill="#AEB7BD" font-family="Inter, Arial, sans-serif" font-size="16">Sender</text>
+  <rect x="270" y="0" width="1170" height="86" fill="#FFFFFF"/>
+  <text x="320" y="54" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">Lead generation workspace</text>
+  <rect x="1158" y="24" width="138" height="38" rx="19" fill="#F1EDE4"/>
+  <text x="1190" y="49" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700">Export CSV</text>
+  <g transform="translate(320 126)">
+    <rect width="320" height="140" rx="18" fill="#FFFFFF"/>
+    <text x="26" y="46" fill="#5C6874" font-family="Inter, Arial, sans-serif" font-size="15">Verified leads</text>
+    <text x="26" y="100" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="850">1,248</text>
+  </g>
+  <g transform="translate(672 126)">
+    <rect width="320" height="140" rx="18" fill="#FFFFFF"/>
+    <text x="26" y="46" fill="#5C6874" font-family="Inter, Arial, sans-serif" font-size="15">Average confidence</text>
+    <text x="26" y="100" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="850">86%</text>
+  </g>
+  <g transform="translate(1024 126)">
+    <rect width="320" height="140" rx="18" fill="#FFFFFF"/>
+    <text x="26" y="46" fill="#5C6874" font-family="Inter, Arial, sans-serif" font-size="15">Inbox risk</text>
+    <text x="26" y="100" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="850">Low</text>
+  </g>
+  <rect x="320" y="306" width="460" height="616" rx="20" fill="#FFFFFF"/>
+  <text x="352" y="362" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">Generate leads</text>
+  <rect x="352" y="404" width="396" height="54" rx="12" fill="#F7F5EF"/>
+  <text x="376" y="438" fill="#5C6874" font-family="Inter, Arial, sans-serif" font-size="16">Niche: SaaS agencies</text>
+  <rect x="352" y="482" width="396" height="54" rx="12" fill="#F7F5EF"/>
+  <text x="376" y="516" fill="#5C6874" font-family="Inter, Arial, sans-serif" font-size="16">Location: United States</text>
+  <rect x="352" y="560" width="116" height="44" rx="22" fill="#17212B"/>
+  <text x="382" y="589" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="750">Reddit</text>
+  <rect x="484" y="560" width="86" height="44" rx="22" fill="#F1EDE4"/>
+  <text x="514" y="589" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="750">X</text>
+  <rect x="586" y="560" width="132" height="44" rx="22" fill="#F1EDE4"/>
+  <text x="616" y="589" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="750">Maps</text>
+  <rect x="352" y="650" width="184" height="56" rx="28" fill="#C8141E"/>
+  <text x="390" y="686" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="800">Run search</text>
+  <rect x="816" y="306" width="528" height="616" rx="20" fill="#FFFFFF"/>
+  <text x="848" y="362" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800">Leads hub</text>
+  <rect x="848" y="396" width="464" height="48" rx="12" fill="#F7F5EF"/>
+  <g fill="#DDE3E8">
+    <rect x="848" y="484" width="464" height="1"/>
+    <rect x="848" y="554" width="464" height="1"/>
+    <rect x="848" y="624" width="464" height="1"/>
+    <rect x="848" y="694" width="464" height="1"/>
+  </g>
+  <text x="870" y="524" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="750">Apex Growth</text>
+  <text x="870" y="594" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="750">Northstar RevOps</text>
+  <text x="870" y="664" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="750">Brightline CRM</text>
+  <rect x="1166" y="502" width="92" height="32" rx="16" fill="#E9F5EF"/>
+  <text x="1190" y="524" fill="#2F7D62" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="800">Valid</text>
+  <rect x="1166" y="572" width="92" height="32" rx="16" fill="#FFF3D6"/>
+  <text x="1188" y="594" fill="#8A6B18" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="800">Risky</text>
+</svg>
