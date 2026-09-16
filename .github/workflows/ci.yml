@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+jobs:
+  backend:
+    name: Backend checks
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+      - name: Install backend dependencies
+        run: pip install -r requirements.txt
+      - name: Compile Python
+        run: python -m compileall -q .
+      - name: Django deploy check
+        env:
+          DJANGO_SETTINGS_MODULE: leadgen.test_settings
+          DEBUG: "True"
+          SECRET_KEY: test-secret
+        run: python manage.py check --deploy
+      - name: Check for missing migrations
+        env:
+          DJANGO_SETTINGS_MODULE: leadgen.test_settings
+          DEBUG: "True"
+          SECRET_KEY: test-secret
+        run: python manage.py makemigrations --check --dry-run
+      - name: Pylint
+        run: pylint leadgen leads
+      - name: Tests with coverage
+        run: pytest
+
+  frontend:
+    name: Frontend checks
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: leadgen-frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: leadgen-frontend/package-lock.json
+      - name: Install frontend dependencies
+        run: npm install
+      - name: Lint
+        run: npm run lint
+      - name: Test with coverage
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:8000/api
+        run: npm test
+      - name: Build
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:8000/api
+        run: npm run build
