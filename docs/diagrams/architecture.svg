@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 620" font-family="'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#6B7872"/>
+    </marker>
+    <style>
+      .lane{fill:#EEF2EF;stroke:#D6DDD8;rx:14;}
+      .lbl{fill:#6B7872;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;}
+      .box{fill:#FFFFFF;stroke:#CBD5CE;stroke-width:1.5;rx:12;}
+      .acc{fill:#E6F2F0;stroke:#087F74;stroke-width:1.5;rx:12;}
+      .t{fill:#101815;font-size:14px;font-weight:600;}
+      .s{fill:#6B7872;font-size:11.5px;}
+      .edge{stroke:#6B7872;stroke-width:1.6;fill:none;marker-end:url(#arrow);}
+      .edged{stroke:#B98221;stroke-width:1.6;fill:none;stroke-dasharray:5 4;marker-end:url(#arrow);}
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="620" fill="#F6F7F5"/>
+  <text x="32" y="40" fill="#101815" font-size="22" font-weight="700">LeadGen AI — System Architecture</text>
+
+  <!-- Client lane -->
+  <rect class="lane" x="32" y="64" width="896" height="110" rx="14"/>
+  <text class="lbl" x="48" y="86">Client</text>
+  <rect class="acc" x="60" y="96" width="230" height="60" rx="12"/>
+  <text class="t" x="75" y="122">Next.js 15 · App Router</text>
+  <text class="s" x="75" y="140">React 19 static export (SPA)</text>
+  <rect class="box" x="315" y="96" width="180" height="60" rx="12"/>
+  <text class="t" x="330" y="122">AuthGate guard</text>
+  <text class="s" x="330" y="140">/login · /dashboard</text>
+  <rect class="box" x="520" y="96" width="180" height="60" rx="12"/>
+  <text class="t" x="535" y="122">api.js (axios)</text>
+  <text class="s" x="535" y="140">JWT + refresh interceptors</text>
+
+  <!-- API lane -->
+  <rect class="lane" x="32" y="196" width="612" height="160" rx="14"/>
+  <text class="lbl" x="48" y="218">Application — Django REST</text>
+  <rect class="acc" x="60" y="230" width="170" height="52" rx="12"/>
+  <text class="t" x="74" y="252">Auth layer</text>
+  <text class="s" x="74" y="270">JWT + Firebase (dual)</text>
+  <rect class="box" x="245" y="230" width="170" height="52" rx="12"/>
+  <text class="t" x="259" y="252">API views</text>
+  <text class="s" x="259" y="270">leads · verify · deliver</text>
+  <rect class="box" x="430" y="230" width="196" height="52" rx="12"/>
+  <text class="t" x="444" y="252">Services</text>
+  <text class="s" x="444" y="270">generator · verifier · policy</text>
+  <rect class="box" x="60" y="296" width="170" height="46" rx="12"/>
+  <text class="t" x="74" y="324">Models (Lead)</text>
+  <rect class="box" x="245" y="296" width="170" height="46" rx="12"/>
+  <text class="t" x="259" y="324">Celery tasks</text>
+  <rect class="box" x="430" y="296" width="196" height="46" rx="12"/>
+  <text class="t" x="444" y="324">Throttling · CORS</text>
+
+  <!-- Data lane -->
+  <rect class="lane" x="664" y="196" width="264" height="160" rx="14"/>
+  <text class="lbl" x="680" y="218">Data</text>
+  <rect class="box" x="690" y="230" width="210" height="52" rx="12"/>
+  <text class="t" x="705" y="252">PostgreSQL</text>
+  <text class="s" x="705" y="270">owner-scoped leads</text>
+  <rect class="box" x="690" y="296" width="210" height="46" rx="12"/>
+  <text class="t" x="705" y="324">Redis — broker + cache</text>
+
+  <!-- External lane -->
+  <rect class="lane" x="32" y="378" width="896" height="200" rx="14"/>
+  <text class="lbl" x="48" y="400">External providers</text>
+  <rect class="box" x="60" y="412" width="150" height="52" rx="12"/>
+  <text class="t" x="74" y="434">Firebase Auth</text>
+  <text class="s" x="74" y="452">Google sign-in</text>
+  <rect class="box" x="228" y="412" width="150" height="52" rx="12"/>
+  <text class="t" x="242" y="434">SerpAPI</text>
+  <text class="s" x="242" y="452">search sources</text>
+  <rect class="box" x="396" y="412" width="150" height="52" rx="12"/>
+  <text class="t" x="410" y="434">Apify</text>
+  <text class="s" x="410" y="452">deep crawl</text>
+  <rect class="box" x="564" y="412" width="150" height="52" rx="12"/>
+  <text class="t" x="578" y="434">DNS / MX</text>
+  <text class="s" x="578" y="452">email validation</text>
+  <rect class="box" x="732" y="412" width="150" height="52" rx="12"/>
+  <text class="t" x="746" y="434">SMTP (Gmail)</text>
+  <text class="s" x="746" y="452">deliverability</text>
+  <text class="s" x="60" y="500" font-size="12">Celery worker shares PostgreSQL + Redis and calls SerpAPI / Apify for asynchronous lead generation.</text>
+  <text class="s" x="60" y="520" font-size="12">Firebase ID tokens are exchanged once for Django SimpleJWT; the SPA then calls the API with Bearer JWT.</text>
+
+  <!-- Edges -->
+  <path class="edge" d="M175,156 L175,196"/>
+  <path class="edge" d="M610,156 C610,180 320,180 320,196"/>
+  <path class="edge" d="M290,126 C300,126 305,126 315,126"/>
+  <path class="edge" d="M495,126 L520,126"/>
+  <path class="edge" d="M626,256 L690,256"/>
+  <path class="edge" d="M330,342 C330,360 800,360 800,342"/>
+  <path class="edged" d="M610,116 C740,116 610,412 620,412" opacity="0"/>
+  <path class="edge" d="M135,412 C135,300 150,300 150,282"/>
+  <path class="edge" d="M470,282 C470,340 500,412 470,412"/>
+</svg>
