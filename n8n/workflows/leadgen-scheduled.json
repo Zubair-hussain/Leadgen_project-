@@ -1,0 +1,132 @@
+{
+  "name": "LeadGen — Scheduled Generation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 24
+            }
+          ]
+        }
+      },
+      "id": "trigger-schedule",
+      "name": "Every 24h",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-40, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "a1", "name": "apiBase", "value": "http://localhost:8000/api", "type": "string" },
+            { "id": "a2", "name": "username", "value": "REPLACE_WITH_DJANGO_USERNAME", "type": "string" },
+            { "id": "a3", "name": "password", "value": "REPLACE_WITH_DJANGO_PASSWORD", "type": "string" },
+            { "id": "a4", "name": "category", "value": "Dentists", "type": "string" },
+            { "id": "a5", "name": "location", "value": "Austin", "type": "string" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-config",
+      "name": "Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [180, 300],
+      "notes": "Edit these values, or replace the credentials with n8n credentials. Never commit real passwords."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.apiBase }}/token/",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"username\": \"{{ $json.username }}\",\n  \"password\": \"{{ $json.password }}\"\n}",
+        "options": {}
+      },
+      "id": "http-token",
+      "name": "Get JWT (POST /token/)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [420, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').item.json.apiBase }}/generate/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $json.access }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"category\": \"{{ $('Config').item.json.category }}\",\n  \"niche\": \"{{ $('Config').item.json.category }}\",\n  \"platforms\": [\"reddit\", \"google-maps\"],\n  \"target_location\": \"{{ $('Config').item.json.location }}\",\n  \"is_professional\": false\n}",
+        "options": {}
+      },
+      "id": "http-generate",
+      "name": "Generate Leads (POST /generate/)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "typeValidation": "loose" },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ ($json.leads || []).length }}",
+              "rightValue": 0,
+              "operator": { "type": "number", "operation": "gt" }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "if-leads",
+      "name": "Any leads?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {},
+      "id": "noop-found",
+      "name": "Leads generated",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1140, 200],
+      "notes": "Add your delivery step here (Google Sheets, Slack, email, CRM). The leads are on $json.leads and a ready-to-download CSV is on $json.csv_base64."
+    },
+    {
+      "parameters": {},
+      "id": "noop-none",
+      "name": "No leads",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1140, 400]
+    }
+  ],
+  "connections": {
+    "Every 24h": { "main": [[{ "node": "Config", "type": "main", "index": 0 }]] },
+    "Config": { "main": [[{ "node": "Get JWT (POST /token/)", "type": "main", "index": 0 }]] },
+    "Get JWT (POST /token/)": { "main": [[{ "node": "Generate Leads (POST /generate/)", "type": "main", "index": 0 }]] },
+    "Generate Leads (POST /generate/)": { "main": [[{ "node": "Any leads?", "type": "main", "index": 0 }]] },
+    "Any leads?": {
+      "main": [
+        [{ "node": "Leads generated", "type": "main", "index": 0 }],
+        [{ "node": "No leads", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "tags": [{ "name": "leadgen" }]
+}
