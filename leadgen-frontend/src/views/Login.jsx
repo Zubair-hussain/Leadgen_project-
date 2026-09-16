@@ -1,6 +1,9 @@
+'use client';
+
 import { useState } from "react";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../firebase";
+import { exchangeFirebaseToken } from "../services/api";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Zap,
@@ -21,6 +24,13 @@ const Login = () => {
     setIsLoading(true);
     try {
       await signInWithPopup(auth, googleProvider);
+      // Exchange the Firebase session for a Django SimpleJWT pair (best-effort:
+      // the request interceptor still falls back to the Firebase token).
+      try {
+        await exchangeFirebaseToken();
+      } catch (exchangeError) {
+        console.error("JWT exchange failed; falling back to Firebase token", exchangeError);
+      }
       toast.success("Welcome to LeadGen AI!");
     } catch (error) {
       console.error("Login failed", error);
@@ -39,7 +49,7 @@ const Login = () => {
     {
       icon: ShieldCheck,
       title: "Verified Quality",
-      description: "99.8% email verification accuracy"
+      description: "Syntax and domain checks before outreach"
     },
     {
       icon: TrendingUp,
@@ -200,12 +210,12 @@ const Login = () => {
               className="flex items-center gap-8 pt-4"
             >
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary-600">50M+</div>
-                <div className="text-sm text-muted-foreground">Leads Generated</div>
+                <div className="text-2xl font-bold text-primary-600">Multi</div>
+                <div className="text-sm text-muted-foreground">Source Search</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-success-600">99.8%</div>
-                <div className="text-sm text-muted-foreground">Verification Rate</div>
+                <div className="text-2xl font-bold text-success-600">MX</div>
+                <div className="text-sm text-muted-foreground">Domain Checks</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-warning-600">24/7</div>
@@ -281,11 +291,11 @@ const Login = () => {
                   <div className="flex justify-center items-center gap-6 pt-4 border-t border-border">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <ShieldCheck className="w-4 h-4 text-success-500" />
-                      <span>Enterprise Security</span>
+                      <span>Authenticated API</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Globe className="w-4 h-4 text-primary-500" />
-                      <span>SOC 2 Compliant</span>
+                      <span>Owner-Scoped Data</span>
                     </div>
                   </div>
                 </div>
