@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Replace YOUR-DOMAIN with your deployed host after the first Vercel deploy. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://YOUR-DOMAIN/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://YOUR-DOMAIN/blog/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://YOUR-DOMAIN/blog/how-to-get-serpapi-key</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://YOUR-DOMAIN/blog/how-to-get-apify-token</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://YOUR-DOMAIN/blog/how-to-get-google-programmable-search</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://YOUR-DOMAIN/blog/how-to-get-gemini-api-key</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://YOUR-DOMAIN/blog/what-is-b2b-lead-generation</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://YOUR-DOMAIN/blog/email-verification-deliverability</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://YOUR-DOMAIN/blog/automate-lead-generation-with-n8n</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>
