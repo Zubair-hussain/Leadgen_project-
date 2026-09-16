@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+  <style>
+    .bg{fill:#FFFFFF}.panel{fill:#F4F6F5;stroke:#D3D9D4;stroke-width:1.5;rx:12}
+    .ph{fill:#E3E8E4;stroke:#CBD2CC;stroke-width:1;rx:8}
+    .cta{fill:#0F1815;rx:10}.ctat{fill:#FFFFFF;font-size:14px;font-weight:600}
+    .h{fill:#101815;font-weight:700}.t{fill:#3C433E;font-size:13px}.s{fill:#8A938C;font-size:12px}
+    .cap{fill:#6B7872;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+    .chip{fill:#EAF1EE;stroke:#0F7F74;stroke-width:1;rx:14}
+  </style>
+  <rect class="bg" x="0" y="0" width="900" height="560"/>
+  <rect x="0" y="0" width="900" height="46" fill="#F4F6F5"/>
+  <text class="cap" x="24" y="29">Wireframe — Login  ( / , /login )</text>
+
+  <!-- Left hero -->
+  <text class="h" x="48" y="120" font-size="15">◆ LeadGen AI</text>
+  <text class="h" x="48" y="180" font-size="34">Find Your Next</text>
+  <text class="h" x="48" y="214" font-size="34" fill="#0F7F74">Big Client</text>
+  <rect class="ph" x="48" y="240" width="360" height="14" rx="7"/>
+  <rect class="ph" x="48" y="262" width="300" height="14" rx="7"/>
+
+  <!-- feature grid -->
+  <rect class="panel" x="48" y="300" width="175" height="70" rx="12"/>
+  <rect class="panel" x="233" y="300" width="175" height="70" rx="12"/>
+  <rect class="panel" x="48" y="380" width="175" height="70" rx="12"/>
+  <rect class="panel" x="233" y="380" width="175" height="70" rx="12"/>
+  <text class="t" x="66" y="330">◻ Precision Targeting</text>
+  <text class="s" x="66" y="350">50+ platforms</text>
+  <text class="t" x="251" y="330">◻ Verified Quality</text>
+  <text class="s" x="251" y="350">MX + syntax checks</text>
+  <text class="t" x="66" y="410">◻ Scale Instantly</text>
+  <text class="s" x="66" y="430">thousands in minutes</text>
+  <text class="t" x="251" y="410">◻ B2B Focused</text>
+  <text class="s" x="251" y="430">business outreach</text>
+
+  <!-- stats -->
+  <text class="h" x="66" y="490" font-size="20" fill="#0F7F74">Multi</text><text class="s" x="66" y="508">source</text>
+  <text class="h" x="176" y="490" font-size="20" fill="#147D52">MX</text><text class="s" x="176" y="508">domain</text>
+  <text class="h" x="276" y="490" font-size="20" fill="#B98221">24/7</text><text class="s" x="276" y="508">AI</text>
+
+  <!-- Right login card -->
+  <rect class="panel" x="500" y="150" width="352" height="270" rx="16"/>
+  <text class="h" x="676" y="200" font-size="20" text-anchor="middle">Welcome Back</text>
+  <text class="s" x="676" y="222" text-anchor="middle">Sign in to access your lead engine</text>
+  <rect class="cta" x="530" y="250" width="292" height="52"/>
+  <text class="ctat" x="676" y="282" text-anchor="middle">◉  Continue with Google  →</text>
+  <line x1="530" y1="330" x2="822" y2="330" stroke="#D3D9D4"/>
+  <rect class="chip" x="540" y="348" width="130" height="30"/>
+  <text class="s" x="556" y="368">🛡 Authenticated API</text>
+  <rect class="chip" x="682" y="348" width="140" height="30"/>
+  <text class="s" x="698" y="368">◍ Owner-scoped data</text>
+
+  <text class="s" x="676" y="450" text-anchor="middle" font-size="11">On success: Firebase sign-in → exchange for Django JWT → redirect to /dashboard</text>
+</svg>
