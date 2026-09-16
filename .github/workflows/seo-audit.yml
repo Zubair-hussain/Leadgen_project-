@@ -1,0 +1,64 @@
+name: SEO audit (Tuesday)
+
+# Runs every Tuesday 07:00 UTC (and on demand).
+#  - Lighthouse: real audit of the deployed URL, report uploaded as an artifact.
+#  - Semrush: optional domain audit, only runs when you provide an API key.
+#
+# Configure (Settings → Secrets and variables → Actions):
+#  - Variable  SITE_URL     e.g. https://your-app.vercel.app         (enables Lighthouse)
+#  - Variable  SEO_DOMAIN   e.g. zubair-hussain-portfolio...workers.dev (Semrush target)
+#  - Secret    SEMRUSH_API_KEY                                        (enables Semrush)
+# Unconfigured jobs skip cleanly.
+
+on:
+  schedule:
+    - cron: '0 7 * * 2'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    if: ${{ vars.SITE_URL != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Lighthouse
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: ${{ vars.SITE_URL }}
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+  semrush:
+    name: Semrush domain overview (optional)
+    runs-on: ubuntu-latest
+    env:
+      SEMRUSH_API_KEY: ${{ secrets.SEMRUSH_API_KEY }}
+      SEO_DOMAIN: ${{ vars.SEO_DOMAIN }}
+    steps:
+      - name: Skip notice
+        if: ${{ env.SEMRUSH_API_KEY == '' || env.SEO_DOMAIN == '' }}
+        run: echo "Set SEMRUSH_API_KEY (secret) and SEO_DOMAIN (variable) to enable the Semrush audit."
+
+      # Semrush Analytics API (v3) Domain Overview. Consumes API units — verify
+      # the database/columns against your Semrush plan before relying on it.
+      - name: Query Semrush
+        if: ${{ env.SEMRUSH_API_KEY != '' && env.SEO_DOMAIN != '' }}
+        continue-on-error: true
+        run: |
+          mkdir -p semrush
+          curl -sS "https://api.semrush.com/?type=domain_ranks&key=${SEMRUSH_API_KEY}&domain=${SEO_DOMAIN}&database=us&export_columns=Db,Dn,Rk,Or,Ot,Oc,Ad" \
+            -o semrush/domain_ranks.csv || true
+          echo "----- Semrush domain_ranks.csv -----"
+          cat semrush/domain_ranks.csv || true
+
+      - name: Upload Semrush report
+        if: ${{ env.SEMRUSH_API_KEY != '' && env.SEO_DOMAIN != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: semrush-report
+          path: semrush/
+          if-no-files-found: ignore
