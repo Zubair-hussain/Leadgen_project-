@@ -1,0 +1,11 @@
+Frontend static-export smoke test - 2026-09-16T11:30:18Z
+Served ./out via http.server; routes:
+GET / -> HTTP 200
+GET /login/ -> HTTP 200
+GET /dashboard/ -> HTTP 200
+GET /404.html -> HTTP 200
+login markup check: 
+
+Note: pages are client components behind AuthGate, so the initial static HTML is
+the loading shell; interactive content ("Continue with Google", dashboard tabs)
+renders after hydration in the browser. All routes return HTTP 200.
