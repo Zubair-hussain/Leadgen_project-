@@ -1,0 +1,7 @@
+# robots.txt for the LeadGen landing page
+User-agent: *
+Allow: /
+
+# After deploying, replace YOUR-DOMAIN with your real host so search engines
+# can discover the sitemap:
+Sitemap: https://YOUR-DOMAIN/sitemap.xml
