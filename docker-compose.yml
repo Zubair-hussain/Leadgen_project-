@@ -6,12 +6,13 @@ services:
     environment:
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
     env_file:
-      - ./backend/.env
+      - path: ./backend/.env
+        required: false
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-    ports:
-      - "${POSTGRES_PORT:-5433}:5432"
+    expose:
+      - "5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-leadgen_user} -d ${POSTGRES_DB:-leadgen}"]
       interval: 10s
@@ -32,8 +33,8 @@ services:
     image: redis:7-alpine
     restart: unless-stopped
     command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
-    ports:
-      - "${REDIS_PORT:-6379}:6379"
+    expose:
+      - "6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -61,7 +62,7 @@ services:
       sh -c "
         python manage.py collectstatic --noinput --clear &&
         python manage.py migrate --noinput &&
-        python manage.py runserver 0.0.0.0:8000
+        gunicorn leadgen.wsgi:application --bind 0.0.0.0:8000 --workers ${GUNICORN_WORKERS:-3} --timeout ${GUNICORN_TIMEOUT:-120}
       "
     volumes:
       - ./backend:/app
@@ -69,14 +70,15 @@ services:
       - media_files:/app/media
       - ./backend/logs:/app/logs
     env_file:
-      - ./backend/.env
+      - path: ./backend/.env
+        required: false
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
     ports:
-      - "${BACKEND_PORT:-8000}:8000"
+      - "127.0.0.1:${BACKEND_PORT:-8000}:8000"
     networks:
       - leadgen_network
     healthcheck:
@@ -103,7 +105,8 @@ services:
       - ./backend:/app
       - ./backend/logs:/app/logs
     env_file:
-      - ./backend/.env
+      - path: ./backend/.env
+        required: false
     depends_on:
       backend:
         condition: service_healthy
@@ -130,7 +133,8 @@ services:
       - ./backend:/app
       - ./backend/logs:/app/logs
     env_file:
-      - ./backend/.env
+      - path: ./backend/.env
+        required: false
     depends_on:
       backend:
         condition: service_healthy
@@ -175,14 +179,22 @@ services:
     build:
       context: ./leadgen-frontend
       dockerfile: Dockerfile
+      args:
+        # NEXT_PUBLIC_* values are baked into the static export at build time.
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000/api}
+        NEXT_PUBLIC_FIREBASE_API_KEY: ${NEXT_PUBLIC_FIREBASE_API_KEY:-}
+        NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN:-}
+        NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${NEXT_PUBLIC_FIREBASE_PROJECT_ID:-}
+        NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET:-}
+        NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID:-}
+        NEXT_PUBLIC_FIREBASE_APP_ID: ${NEXT_PUBLIC_FIREBASE_APP_ID:-}
+        NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: ${NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID:-}
     restart: unless-stopped
     ports:
-      - "5173:5173"
-    volumes:
-      - ./leadgen-frontend:/app
-      - /app/node_modules
+      - "127.0.0.1:5173:80"
     env_file:
-      - ./leadgen-frontend/.env
+      - path: ./leadgen-frontend/.env
+        required: false
     depends_on:
       - backend
     networks:
