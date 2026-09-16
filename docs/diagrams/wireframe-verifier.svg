@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+  <style>
+    .bg{fill:#FFFFFF}.card{fill:#F8FAF8;stroke:#D3D9D4;stroke-width:1.4;rx:12}
+    .field{fill:#FFFFFF;stroke:#CBD2CC;stroke-width:1.2;rx:8}
+    .cta{rx:10}.ctat{fill:#fff;font-size:13px;font-weight:600}
+    .dash{fill:#FFFFFF;stroke:#CBD2CC;stroke-width:1.4;stroke-dasharray:6 4;rx:10}
+    .h{fill:#101815;font-weight:700}.t{fill:#3C433E;font-size:12.5px}.s{fill:#8A938C;font-size:11px}
+    .cap{fill:#6B7872;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+  </style>
+  <rect class="bg" width="900" height="560"/>
+  <rect x="0" y="0" width="900" height="46" fill="#F4F6F5"/>
+  <text class="cap" x="24" y="29">Wireframe — Verifier tab</text>
+
+  <!-- Single lookup -->
+  <rect class="card" x="40" y="66" width="400" height="210"/>
+  <text class="h" x="62" y="98" font-size="15">Single Lookup</text>
+  <text class="s" x="62" y="116">Instant verification for one address</text>
+  <text class="s" x="62" y="146">✉ Email Address</text>
+  <rect class="field" x="62" y="154" width="356" height="40"/>
+  <text class="s" x="78" y="179">hello@company.com</text>
+  <rect class="cta" x="62" y="208" width="130" height="40" fill="#3B82F6"/>
+  <text class="ctat" x="127" y="233" text-anchor="middle">🛡 Verify Now</text>
+  <text class="s" x="210" y="233">→ Status · MX · Score card</text>
+
+  <!-- Batch verify -->
+  <rect class="card" x="460" y="66" width="400" height="210"/>
+  <text class="h" x="482" y="98" font-size="15">Batch Verify</text>
+  <text class="s" x="482" y="116">Comma or newline-separated emails</text>
+  <rect class="field" x="482" y="130" width="356" height="80"/>
+  <text class="s" x="498" y="152">email1@co.com</text>
+  <text class="s" x="498" y="170">email2@co.com</text>
+  <rect class="cta" x="482" y="222" width="130" height="40" fill="#0F7F74"/>
+  <text class="ctat" x="547" y="247" text-anchor="middle">⚡ Run Batch</text>
+
+  <!-- File upload -->
+  <rect class="card" x="40" y="292" width="400" height="228"/>
+  <text class="h" x="62" y="324" font-size="15">File Upload</text>
+  <text class="s" x="62" y="342">CSV or TXT — one email per line</text>
+  <rect class="dash" x="62" y="356" width="356" height="104"/>
+  <text class="t" x="240" y="404" text-anchor="middle">⭱  Drop file here or browse</text>
+  <text class="s" x="240" y="424" text-anchor="middle">Max 5 MB · CSV or TXT</text>
+  <rect class="field" x="62" y="472" width="356" height="36"/>
+  <text class="t" x="80" y="495">🛡 Bulk Verify All Leads</text>
+
+  <!-- Results -->
+  <rect class="card" x="460" y="292" width="400" height="228"/>
+  <text class="h" x="482" y="324" font-size="15">Verification Results</text>
+  <text class="s" x="482" y="342">✓ 1 Valid   ✕ 1 Invalid</text>
+  <line x1="482" y1="356" x2="838" y2="356" stroke="#E3E8E4"/>
+  <text class="t" x="482" y="382">a@x.com</text>
+  <rect x="740" y="368" width="86" height="20" rx="10" fill="#E7F3EA"/>
+  <text class="s" x="752" y="382" fill="#147D52">✓ Verified</text>
+  <text class="t" x="482" y="414">b@x.com</text>
+  <rect x="740" y="400" width="86" height="20" rx="10" fill="#FBEBEB"/>
+  <text class="s" x="756" y="414" fill="#B13A3A">✕ Failed</text>
+  <text class="s" x="482" y="470">Single → /verify-single/ · Batch → /verify-multi/</text>
+</svg>
