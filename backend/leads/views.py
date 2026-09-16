@@ -1,8 +1,9 @@
 import base64
 import csv
 import logging
-import os
+import re
 from io import StringIO
+from django.http import StreamingHttpResponse
 from django.conf import settings
 from django.utils import timezone
 from django_ratelimit.decorators import ratelimit
@@ -14,9 +15,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
+from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Lead
 from .serializers import LeadSerializer
 from .services import DeliverabilityPolicyChecker, EmailVerifier, LeadGenerator
+from .tasks import generate_leads_task
 
 logger = logging.getLogger(__name__)
 
@@ -32,40 +35,38 @@ def health_check(request):
     """API health check endpoint"""
     return Response({
         "status": "healthy",
-        "db_connected": Lead.objects.exists(),
-        "serpapi_ready": bool(os.getenv('SERPAPI_KEY')),
-        "google_cse_ready": bool(os.getenv('GOOGLE_API_KEY') and os.getenv('GOOGLE_CX')),
-        "apify_ready": bool(os.getenv('APIFY_API_KEY') and os.getenv('APIFY_API_KEY') != "your_apify_api_key_here"),
-        "gemini_ready": bool(os.getenv('GEMINI_API_KEY')),
-        "sender": {
-            "provider": "Gmail",
-            "email": settings.DEFAULT_FROM_EMAIL,
-            "host": settings.EMAIL_HOST,
-            "configured": bool(settings.EMAIL_HOST_USER),
-        },
         "timestamp": timezone.now().isoformat(),
     })
 
 @api_view(['GET'])
-@permission_classes([AllowAny])
 def export_leads(request):
     """Export all leads as CSV"""
-    leads = Lead.objects.filter(is_verified=True).order_by('-created_at')
-    output = StringIO()
-    writer = csv.writer(output)
-    writer.writerow(['ID', 'Email', 'Phone', 'Source', 'Category', 'Location', 'Created At', 'Link', 'Problem Statement'])
+    class Echo:
+        def write(self, value):
+            return value
 
-    for lead in leads:
-        writer.writerow([
-            lead.id, lead.email, lead.phone, lead.source, lead.category,
-            lead.location, lead.created_at.isoformat(), lead.link, lead.problem_statement
+    leads = Lead.objects.filter(
+        owner=request.user,
+        is_verified=True,
+    ).order_by('-created_at').iterator(chunk_size=500)
+
+    writer = csv.writer(Echo())
+
+    def rows():
+        yield writer.writerow([
+            'ID', 'Email', 'Phone', 'Source', 'Category', 'Location',
+            'Created At', 'Link', 'Problem Statement',
         ])
+        for lead in leads:
+            yield writer.writerow([
+                lead.id, lead.email, lead.phone, lead.source, lead.category,
+                lead.location, lead.created_at.isoformat(), lead.link,
+                lead.problem_statement,
+            ])
 
-    return Response({
-        "csv_base64": base64.b64encode(output.getvalue().encode('utf-8')).decode('utf-8'),
-        "filename": "verified_leads.csv",
-        "count": leads.count()
-    })
+    response = StreamingHttpResponse(rows(), content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="verified_leads.csv"'
+    return response
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 20
@@ -73,27 +74,33 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 100
 
 class LeadListView(ListAPIView):
-    queryset = Lead.objects.all().order_by('-created_at')
     serializer_class = LeadSerializer
     pagination_class = StandardResultsSetPagination
-    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        return Lead.objects.filter(owner=self.request.user).order_by('-created_at')
 
 class DeleteLeadView(APIView):
-    permission_classes = [AllowAny]
-
     def delete(self, request, pk):
         try:
-            lead = Lead.objects.get(pk=pk)
+            lead = Lead.objects.get(pk=pk, owner=request.user)
             lead.delete()
             return Response({"message": f"Lead {pk} deleted successfully"}, status=status.HTTP_200_OK)
         except Lead.DoesNotExist:
             return Response({"error": "Lead not found"}, status=status.HTTP_404_NOT_FOUND)
 
 class GenerateLeadsView(APIView):
-    permission_classes = [AllowAny]
-
-    @method_decorator(ratelimit(key='ip', rate='5/5m', block=True))
+    # Rate limit is recorded but not auto-blocked, so staff/admin ("premium")
+    # accounts can bypass it. The premium flag is the authenticated user's
+    # is_staff bit — set securely via `manage.py createsuperuser`, never in code.
+    @method_decorator(ratelimit(key='ip', rate='5/5m', block=False))
     def post(self, request):
+        if getattr(request, 'limited', False) and not request.user.is_staff:
+            return Response(
+                {"error": "Rate limit exceeded. Try again shortly, or use an admin (premium) account."},
+                status=status.HTTP_429_TOO_MANY_REQUESTS,
+            )
+
         category = request.data.get('category')
         if not category:
             return Response({"error": "category is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -111,8 +118,30 @@ class GenerateLeadsView(APIView):
         logger.info(f"Lead generation request: category={category}, platforms={platforms}, location={target_location}, is_professional={is_professional}")
 
         try:
-            generator = LeadGenerator()
-            leads = generator.generate_leads(category, platforms, niche, target_location, is_professional)
+            if settings.LEADGEN_SYNC_REQUESTS:
+                generator = LeadGenerator()
+                leads = generator.generate_leads(
+                    category,
+                    platforms,
+                    niche,
+                    target_location,
+                    is_professional,
+                    owner=request.user,
+                )
+            else:
+                async_result = generate_leads_task.delay(
+                    request.user.id,
+                    category,
+                    platforms,
+                    niche,
+                    target_location,
+                    is_professional,
+                )
+                return Response({
+                    "message": "Lead generation queued",
+                    "task_id": async_result.id,
+                    "timestamp": timezone.now().isoformat(),
+                }, status=status.HTTP_202_ACCEPTED)
             
             logger.info(f"Generated {len(leads)} leads for category={category}")
 
@@ -152,11 +181,9 @@ class GenerateLeadsView(APIView):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class VerifyLeadView(APIView):
-    permission_classes = [AllowAny]
-
     def post(self, request, pk):
         try:
-            lead = Lead.objects.get(pk=pk)
+            lead = Lead.objects.get(pk=pk, owner=request.user)
             lead.is_verified = EmailVerifier.is_valid_email(lead.email)
             lead.save()
             return Response({
@@ -168,10 +195,8 @@ class VerifyLeadView(APIView):
             return Response({"error": "Lead not found"}, status=status.HTTP_404_NOT_FOUND)
 
 class BulkVerifyLeadsView(APIView):
-    permission_classes = [AllowAny]
-
     def post(self, request):
-        unverified = Lead.objects.filter(is_verified=False)
+        unverified = Lead.objects.filter(owner=request.user, is_verified=False)
         total = unverified.count()
         batch = unverified[:50]  # Process in batches
         verified_count = 0
@@ -189,8 +214,7 @@ class BulkVerifyLeadsView(APIView):
         })
 
 class VerifySingleEmailView(APIView):
-    permission_classes = [AllowAny]
-
+    @method_decorator(ratelimit(key='user_or_ip', rate='30/5m', block=True))
     def post(self, request):
         email = request.data.get('email')
         if not email:
@@ -204,8 +228,7 @@ class VerifySingleEmailView(APIView):
         })
 
 class MultiVerifyView(APIView):
-    permission_classes = [AllowAny]
-
+    @method_decorator(ratelimit(key='user_or_ip', rate='10/5m', block=True))
     def post(self, request):
         emails = request.data.get('emails', [])
         if not emails:
@@ -223,12 +246,15 @@ class MultiVerifyView(APIView):
         return Response({"results": results})
 
 class FileUploadVerifyView(APIView):
-    permission_classes = [AllowAny]
-
+    @method_decorator(ratelimit(key='user_or_ip', rate='5/5m', block=True))
     def post(self, request):
         file_obj = request.FILES.get('file')
         if not file_obj:
             return Response({"error": "File is required"}, status=status.HTTP_400_BAD_REQUEST)
+        if file_obj.size > settings.MAX_VERIFY_UPLOAD_BYTES:
+            return Response({
+                "error": f"File exceeds {settings.MAX_VERIFY_UPLOAD_BYTES} bytes"
+            }, status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
 
         content = file_obj.read().decode('utf-8', errors='ignore')
         emails = list(set(re.findall(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', content)))
@@ -250,8 +276,7 @@ class FileUploadVerifyView(APIView):
         })
 
 class DeliverabilityPolicyCheckView(APIView):
-    permission_classes = [AllowAny]
-
+    @method_decorator(ratelimit(key='user_or_ip', rate='20/hour', block=True))
     def post(self, request):
         sender_email = request.data.get('sender_email') or settings.DEFAULT_FROM_EMAIL
         subject = request.data.get('subject', '')
@@ -285,3 +310,25 @@ class DeliverabilityPolicyCheckView(APIView):
                 "error": "Failed to run deliverability policy check",
                 "details": str(e),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class FirebaseTokenExchangeView(APIView):
+    """Exchange a verified Firebase ID token for a Django SimpleJWT pair.
+
+    The Firebase ID token is validated by the default authentication chain
+    (``FirebaseAuthentication``). On success we mint a Django access/refresh
+    pair for the mapped user so the client can use Django-issued JWTs for all
+    subsequent API calls.
+    """
+
+    def post(self, request):
+        refresh = RefreshToken.for_user(request.user)
+        return Response({
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+            "user": {
+                "id": request.user.id,
+                "username": request.user.username,
+                "email": request.user.email,
+            },
+        }, status=status.HTTP_200_OK)
