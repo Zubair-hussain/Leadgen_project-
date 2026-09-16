@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -7,6 +9,14 @@ import {
 } from "lucide-react";
 
 const LeadsTable = ({ leads, handleVerify, handleDelete, verifying, handleExport }) => {
+  const linkHost = (link) => {
+    try {
+      return new URL(link).hostname || 'Link';
+    } catch {
+      return 'Link';
+    }
+  };
+
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -149,7 +159,7 @@ const LeadsTable = ({ leads, handleVerify, handleDelete, verifying, handleExport
                           <div>
                             <p className="font-semibold text-foreground">{lead.email}</p>
                             <p className="text-xs text-muted-foreground">
-                              Added {new Date(lead.created_at || Date.now()).toLocaleDateString()}
+                              Added {lead.created_at ? new Date(lead.created_at).toLocaleDateString() : '—'}
                             </p>
                           </div>
                         </div>
@@ -205,7 +215,7 @@ const LeadsTable = ({ leads, handleVerify, handleDelete, verifying, handleExport
                             title={lead.link}
                           >
                             <ExternalLink className="w-3 h-3" />
-                            <span className="truncate max-w-xs">{new URL(lead.link).hostname || 'Link'}</span>
+                            <span className="truncate max-w-xs">{linkHost(lead.link)}</span>
                           </motion.a>
                         ) : (
                           <span className="text-xs text-muted-foreground">—</span>
