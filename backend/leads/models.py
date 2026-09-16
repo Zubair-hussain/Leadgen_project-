@@ -1,10 +1,19 @@
 from django.db import models
+from django.conf import settings
 from django.utils import timezone
 from django.core.validators import EmailValidator
 import phonenumbers
 
 
 class Lead(models.Model):
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="leads",
+        help_text="Authenticated user who owns this lead",
+    )
     email = models.EmailField(
         unique=True,
         null=True,
@@ -61,6 +70,7 @@ class Lead(models.Model):
     class Meta:
         ordering = ['-created_at']
         indexes = [
+            models.Index(fields=['owner']),
             models.Index(fields=['email']),
             models.Index(fields=['source']),
             models.Index(fields=['category']),
