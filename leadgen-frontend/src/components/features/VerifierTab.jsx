@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -27,41 +29,6 @@ const VerifierTab = ({
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
   };
-
-  const verificationMethods = [
-    {
-      id: "single",
-      icon: Mail,
-      title: "Quick Identity Check",
-      description: "Verify a single email address instantly",
-      color: "from-blue-500 to-blue-600",
-      bgColor: "bg-blue-50 dark:bg-blue-900/20"
-    },
-    {
-      id: "bulk",
-      icon: Database,
-      title: "Database Audit",
-      description: "Comprehensive check on all unverified leads",
-      color: "from-purple-500 to-purple-600",
-      bgColor: "bg-purple-50 dark:bg-purple-900/20"
-    },
-    {
-      id: "paste",
-      icon: FileText,
-      title: "Paste & Verify",
-      description: "Batch verify multiple emails at once",
-      color: "from-green-500 to-green-600",
-      bgColor: "bg-green-50 dark:bg-green-900/20"
-    },
-    {
-      id: "upload",
-      icon: FileSpreadsheet,
-      title: "Document Extraction",
-      description: "Extract and verify emails from files",
-      color: "from-orange-500 to-orange-600",
-      bgColor: "bg-orange-50 dark:bg-orange-900/20"
-    }
-  ];
 
   return (
     <motion.div
@@ -411,8 +378,8 @@ const VerifierTab = ({
           <div className="w-12 h-12 bg-success-100 dark:bg-success-900/30 rounded-xl flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="w-6 h-6 text-success-600" />
           </div>
-          <h3 className="font-semibold text-foreground mb-2">99.8% Accuracy</h3>
-          <p className="text-sm text-muted-foreground">Industry-leading verification</p>
+          <h3 className="font-semibold text-foreground mb-2">Verification Checks</h3>
+          <p className="text-sm text-muted-foreground">Syntax and domain validation</p>
         </div>
 
         <div className="card p-6 text-center">
