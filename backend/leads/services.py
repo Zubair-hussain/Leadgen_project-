@@ -4,6 +4,9 @@ import logging
 import requests
 import json
 import dns.resolver
+import ipaddress
+import socket
+from functools import lru_cache
 from email_validator import validate_email, EmailNotValidError
 from django.db import IntegrityError
 from urllib.parse import unquote, urljoin, urlparse
@@ -58,16 +61,21 @@ class EmailVerifier:
             return False
 
     @staticmethod
+    @lru_cache(maxsize=2048)
+    def domain_has_mx(domain):
+        resolver = dns.resolver.Resolver()
+        resolver.timeout = 2
+        resolver.lifetime = 4
+        mx_records = resolver.resolve(domain, 'MX')
+        return len(mx_records) > 0
+
+    @staticmethod
     def verify_domain(email):
         """Check if domain has valid MX records"""
         try:
             email = EmailVerifier.normalize_email(email)
             domain = email.split('@')[1]
-            resolver = dns.resolver.Resolver()
-            resolver.timeout = 2
-            resolver.lifetime = 4
-            mx_records = resolver.resolve(domain, 'MX')
-            return len(mx_records) > 0
+            return EmailVerifier.domain_has_mx(domain)
         except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer, Exception):
             return False
 
@@ -375,6 +383,7 @@ class LeadGenerator:
             "Chrome/120.0 Safari/537.36"
         )
     }
+    BLOCKED_HOSTS = {"localhost", "localhost.localdomain"}
 
     def __init__(self):
         self.serpapi_key = os.getenv('SERPAPI_KEY')
@@ -416,14 +425,58 @@ class LeadGenerator:
             url = f"https://{url}"
         return url
 
+    def _is_safe_public_url(self, url):
+        parsed = urlparse(url)
+        if parsed.scheme not in ("http", "https") or not parsed.hostname:
+            return False
+
+        hostname = parsed.hostname.strip().lower()
+        if hostname in self.BLOCKED_HOSTS:
+            return False
+
+        try:
+            addresses = socket.getaddrinfo(hostname, None)
+        except socket.gaierror:
+            return False
+
+        for address in addresses:
+            ip = ipaddress.ip_address(address[4][0])
+            if (
+                ip.is_private
+                or ip.is_loopback
+                or ip.is_link_local
+                or ip.is_multicast
+                or ip.is_reserved
+                or ip.is_unspecified
+            ):
+                return False
+        return True
+
     def _fetch_page(self, url):
+        normalized_url = self._normalize_url(url)
+        if not self._is_safe_public_url(normalized_url):
+            logger.warning("Blocked unsafe URL fetch: %s", url)
+            return ""
+
         try:
             response = requests.get(
-                url,
+                normalized_url,
                 headers=self.REQUEST_HEADERS,
                 timeout=8,
-                allow_redirects=True,
+                allow_redirects=False,
             )
+            if response.is_redirect:
+                redirect_url = response.headers.get("location", "")
+                redirect_url = urljoin(normalized_url, redirect_url)
+                if not self._is_safe_public_url(redirect_url):
+                    logger.warning("Blocked unsafe redirect: %s", redirect_url)
+                    return ""
+                response = requests.get(
+                    redirect_url,
+                    headers=self.REQUEST_HEADERS,
+                    timeout=8,
+                    allow_redirects=False,
+                )
             content_type = response.headers.get('content-type', '').lower()
             if response.status_code >= 400 or 'text/html' not in content_type:
                 return ""
@@ -701,7 +754,8 @@ class LeadGenerator:
             logger.error(f"AI filtering error: {e}")
             return leads_batch
 
-    def generate_leads(self, category, platforms, niche=None, target_location=None, is_professional=False):
+    def generate_leads(self, category, platforms, niche=None, target_location=None,
+                       is_professional=False, owner=None):
         """Main lead generation method.
         
         API Priority:
@@ -762,7 +816,7 @@ class LeadGenerator:
             leads_to_save = self.filter_leads_with_ai(leads_to_save, category, niche, target_location)
             logger.info(f"[LeadGen] Total leads after AI filter: {len(leads_to_save)}")
 
-        return self._save_leads(leads_to_save, category)
+        return self._save_leads(leads_to_save, category, owner=owner)
 
     def _search_platform(self, category, platform, niche, location):
         """Platform-specific search using SerpAPI"""
@@ -841,32 +895,36 @@ class LeadGenerator:
             logger.error(f"Platform search error for {platform}: {e}")
             return []
 
-    def _save_leads(self, leads, category):
+    def _save_leads(self, leads, category, owner=None):
         """Save only leads that have a real, deliverable email address."""
         saved_leads = []
+        seen = set()
 
         for lead in leads:
             email = EmailVerifier.normalize_email(lead.get('email', ''))
-            if not EmailVerifier.is_valid_email(email):
+            if email in seen or not EmailVerifier.is_valid_email(email):
                 logger.debug(f"Skipping lead without active email: {lead}")
                 continue
-
-            if Lead.objects.filter(email=email).exists():
-                logger.debug(f"Lead with email {email} already exists. Skipping.")
-                continue
+            seen.add(email)
 
             try:
-                lead_obj = Lead.objects.create(
+                lead_obj, created = Lead.objects.get_or_create(
                     email=email,
-                    phone=lead.get('phone', ''),
-                    source=lead['source'],
-                    category=category,
-                    service=category,
-                    location=lead['location'],
-                    link=lead['link'],
-                    problem_statement=lead['problem_statement'],
-                    is_verified=True,
+                    defaults={
+                        "owner": owner,
+                        "phone": lead.get('phone', ''),
+                        "source": lead['source'],
+                        "category": category,
+                        "service": category,
+                        "location": lead['location'],
+                        "link": lead['link'],
+                        "problem_statement": lead['problem_statement'],
+                        "is_verified": True,
+                    },
                 )
+                if not created:
+                    logger.debug(f"Lead with email {email} already exists. Skipping.")
+                    continue
                 saved_leads.append({
                     "id": lead_obj.id,
                     "email": lead_obj.email,
