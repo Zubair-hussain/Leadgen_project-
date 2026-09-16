@@ -1,6 +1,7 @@
 # Core Django & REST API
-django==6.0.2
+django==5.2.17
 djangorestframework==3.16.1
+djangorestframework-simplejwt[crypto]==5.5.1
 django-cors-headers==4.9.0
 
 # Environment & config
@@ -9,9 +10,8 @@ python-dotenv==1.2.1
 # Database (PostgreSQL driver - binary for faster Docker builds)
 psycopg2-binary==2.9.11
 
-# HTTP & parsing (RSS + web scraping)
+# HTTP & parsing
 requests==2.32.5
-feedparser==6.0.12
 beautifulsoup4==4.14.3
 
 # Email validation & extraction
@@ -25,9 +25,6 @@ celery[redis]==5.6.2
 django-celery-beat==2.9.0
 redis==6.4.0
 
-# Data processing
-pandas==3.0.0
-
 # Production server
 gunicorn==25.1.0
 
@@ -36,7 +33,7 @@ django-debug-toolbar==6.2.0
 
 # APIs
 serpapi==0.1.5
-apify-client==3.1.2
+apify-client==2.5.1
 
 # DNS lookups
 dnspython==2.8.0
@@ -44,5 +41,13 @@ dnspython==2.8.0
 # Rate limiting
 django-ratelimit==4.1.0
 
-# Location extraction
-geograpy3==0.3.0
+# Authentication
+firebase-admin==7.1.0
+
+# Quality gates
+pytest==9.0.2
+pytest-django==4.11.1
+pytest-cov==7.0.0
+coverage==7.13.0
+pylint==3.3.9
+pylint-django==2.6.1
