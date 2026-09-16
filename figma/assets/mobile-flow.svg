@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Mobile flow mockups</title>
+  <desc id="desc">Three mobile screens for landing, generator, and leads list.</desc>
+  <rect width="1200" height="900" fill="#EEF1F2"/>
+  <g transform="translate(96 72)">
+    <rect width="288" height="620" rx="38" fill="#17212B"/>
+    <rect x="16" y="18" width="256" height="584" rx="28" fill="#F7F5EF"/>
+    <text x="42" y="82" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="800">LeadGen AI</text>
+    <text x="42" y="174" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="850">Start</text>
+    <rect x="42" y="196" width="188" height="62" rx="31" fill="#C8141E"/>
+    <text x="76" y="237" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="850">meeting</text>
+    <text x="42" y="318" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="850">buyers.</text>
+    <rect x="42" y="404" width="170" height="48" rx="24" fill="#17212B"/>
+    <text x="72" y="435" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800">Open app</text>
+  </g>
+  <g transform="translate(456 72)">
+    <rect width="288" height="620" rx="38" fill="#17212B"/>
+    <rect x="16" y="18" width="256" height="584" rx="28" fill="#FFFFFF"/>
+    <text x="42" y="82" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800">Generator</text>
+    <rect x="42" y="122" width="204" height="48" rx="12" fill="#F7F5EF"/>
+    <rect x="42" y="192" width="204" height="48" rx="12" fill="#F7F5EF"/>
+    <rect x="42" y="264" width="90" height="38" rx="19" fill="#17212B"/>
+    <rect x="144" y="264" width="88" height="38" rx="19" fill="#F1EDE4"/>
+    <rect x="42" y="348" width="166" height="50" rx="25" fill="#C8141E"/>
+    <text x="76" y="380" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800">Run search</text>
+  </g>
+  <g transform="translate(816 72)">
+    <rect width="288" height="620" rx="38" fill="#17212B"/>
+    <rect x="16" y="18" width="256" height="584" rx="28" fill="#FFFFFF"/>
+    <text x="42" y="82" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800">Leads</text>
+    <rect x="42" y="120" width="204" height="42" rx="12" fill="#F7F5EF"/>
+    <rect x="42" y="196" width="204" height="76" rx="14" fill="#F7F5EF"/>
+    <rect x="42" y="292" width="204" height="76" rx="14" fill="#F7F5EF"/>
+    <rect x="42" y="388" width="204" height="76" rx="14" fill="#F7F5EF"/>
+    <rect x="160" y="212" width="64" height="26" rx="13" fill="#E9F5EF"/>
+    <rect x="160" y="308" width="64" height="26" rx="13" fill="#FFF3D6"/>
+  </g>
+</svg>
