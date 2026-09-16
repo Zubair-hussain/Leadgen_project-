@@ -1,0 +1,16 @@
+[run]
+omit =
+    */migrations/*
+    */tests/*
+    leadgen/asgi.py
+    leadgen/wsgi.py
+    leadgen/settings.py
+    leadgen/test_settings.py
+    leads/admin.py
+    leads/apps.py
+    leads/services.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.:
