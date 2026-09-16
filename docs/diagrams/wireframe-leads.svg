@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+  <style>
+    .bg{fill:#FFFFFF}.card{fill:#F8FAF8;stroke:#D3D9D4;stroke-width:1.4;rx:12}
+    .field{fill:#FFFFFF;stroke:#CBD2CC;stroke-width:1.2;rx:8}
+    .btn{fill:#FFFFFF;stroke:#CBD2CC;stroke-width:1.2;rx:8}
+    .row{fill:#FFFFFF;stroke:#EAECEA;stroke-width:1}
+    .h{fill:#101815;font-weight:700}.t{fill:#3C433E;font-size:12.5px}.s{fill:#8A938C;font-size:11px}
+    .cap{fill:#6B7872;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+    .th{fill:#6B7872;font-size:11px;font-weight:700;letter-spacing:.04em}
+    .ok{fill:#147D52}.warn{fill:#B98221}.del{fill:#B13A3A}
+    .pill{rx:11}
+  </style>
+  <rect class="bg" width="900" height="560"/>
+  <rect x="0" y="0" width="900" height="46" fill="#F4F6F5"/>
+  <text class="cap" x="24" y="29">Wireframe — Leads Hub tab</text>
+
+  <rect class="card" x="40" y="70" width="820" height="450"/>
+  <!-- toolbar -->
+  <rect class="field" x="64" y="92" width="360" height="40"/>
+  <text class="s" x="82" y="117">🔍 Search email, source…</text>
+  <rect class="btn" x="612" y="92" width="118" height="40"/>
+  <text class="t" x="632" y="117">⭳ Export CSV</text>
+  <rect class="btn" x="740" y="92" width="96" height="40"/>
+  <text class="t" x="758" y="117">🛡 Bulk</text>
+
+  <!-- table header -->
+  <line x1="64" y1="152" x2="836" y2="152" stroke="#D3D9D4"/>
+  <text class="th" x="72" y="172">EMAIL</text>
+  <text class="th" x="300" y="172">SOURCE</text>
+  <text class="th" x="410" y="172">WEBSITE</text>
+  <text class="th" x="540" y="172">LOCATION</text>
+  <text class="th" x="640" y="172">STATUS</text>
+  <text class="th" x="770" y="172">ACTIONS</text>
+  <line x1="64" y1="182" x2="836" y2="182" stroke="#D3D9D4"/>
+
+  <!-- rows -->
+  <g>
+    <text class="t" x="72" y="212">✉ jane@acme.com</text>
+    <text class="s" x="300" y="212">Reddit</text>
+    <text class="s" x="410" y="212">acme.com</text>
+    <text class="s" x="540" y="212">US</text>
+    <rect class="pill" x="636" y="198" width="76" height="20" rx="10" fill="#E7F3EA"/>
+    <text class="s" x="648" y="212" fill="#147D52">✓ Verified</text>
+    <text class="t" x="770" y="212">🛡  🗑</text>
+  </g>
+  <line x1="64" y1="228" x2="836" y2="228" stroke="#EEF0EE"/>
+  <g>
+    <text class="t" x="72" y="258">✉ bob@shop.io</text>
+    <text class="s" x="300" y="258">Google Maps</text>
+    <text class="s" x="410" y="258">shop.io</text>
+    <text class="s" x="540" y="258">GB</text>
+    <rect class="pill" x="636" y="244" width="72" height="20" rx="10" fill="#FBF3E4"/>
+    <text class="s" x="648" y="258" fill="#B98221">◷ Pending</text>
+    <text class="t" x="770" y="258">🛡  🗑</text>
+  </g>
+  <line x1="64" y1="274" x2="836" y2="274" stroke="#EEF0EE"/>
+  <g>
+    <text class="t" x="72" y="304">✉ lead@studio.co</text>
+    <text class="s" x="300" y="304">X / Twitter</text>
+    <text class="s" x="410" y="304">studio.co</text>
+    <text class="s" x="540" y="304">AE</text>
+    <rect class="pill" x="636" y="290" width="72" height="20" rx="10" fill="#FBEBEB"/>
+    <text class="s" x="648" y="304" fill="#B13A3A">✕ Failed</text>
+    <text class="t" x="770" y="304">🛡  🗑</text>
+  </g>
+  <line x1="64" y1="320" x2="836" y2="320" stroke="#EEF0EE"/>
+
+  <!-- footer -->
+  <text class="s" x="72" y="486">N leads</text>
+  <text class="s" x="760" y="486">Updated just now</text>
+  <text class="s" x="72" y="360">Search filters client-side · Verify → /api/leads/{id}/verify/ · Delete → owner-scoped · Export → /api/leads/export/</text>
+</svg>
