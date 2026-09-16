@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -275,8 +277,8 @@ const GeneratorForm = ({ form, setForm, busy, handleGenerate, togglePlatform }) 
           <div className="w-12 h-12 bg-success-100 dark:bg-success-900/30 rounded-xl flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="w-6 h-6 text-success-600" />
           </div>
-          <h3 className="font-semibold text-foreground mb-2">99.8% Accuracy</h3>
-          <p className="text-sm text-muted-foreground">Industry-leading email verification</p>
+          <h3 className="font-semibold text-foreground mb-2">Verification Checks</h3>
+          <p className="text-sm text-muted-foreground">Syntax and domain validation</p>
         </div>
 
         <div className="card p-6 text-center">
