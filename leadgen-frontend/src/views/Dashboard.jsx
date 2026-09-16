@@ -1,5 +1,14 @@
+'use client';
+
 import React, { useState, useEffect, useRef } from "react";
-import api from "../services/api";
+import api, { clearTokens } from "../services/api";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
+
+const logout = () => {
+  clearTokens();
+  return signOut(auth);
+};
 
 /* ─────────────────────────────────────────────────────────────────────────────
    ICONS  — pure inline SVG, zero dependencies
@@ -378,7 +387,7 @@ const PLATS = [
   { id:"x",           label:"X / Twitter", I:Ic.Twitter },
   { id:"google-maps", label:"Google Maps", I:Ic.Pin     },
 ];
-const SENDER_EMAIL = "xovaotech@gmail.com";
+const SENDER_EMAIL = "noreply@example.com";
 const NICHES   = ["Real Estate","SaaS","E-commerce","Fitness","Restaurant","Agency","Healthcare","Finance","Education","Hospitality"];
 const COUNTRIES= ["US","AU","GB","CA","DE","FR","IN","PK","AE","SG"];
 const DEMO_LEADS=[
@@ -583,8 +592,45 @@ function Verifier(){
   const[mRes,setMRes]=useState([]);
   const[busy,setBusy]=useState(false);
 
-  const doSingle=e=>{e.preventDefault();if(!single)return;setBusy(true);setSRes(null);setTimeout(()=>{setSRes({is_valid:true,format_valid:true,mx_found:true,disposable:false,score:91});setBusy(false);},1200);};
-  const doMulti=e=>{e.preventDefault();const em=multi.split(/[\n,]+/).map(x=>x.trim()).filter(Boolean);if(!em.length)return;setBusy(true);setTimeout(()=>{setMRes(em.map(email=>({email,is_valid:Math.random()>.3})));setBusy(false);},1400);};
+  const doSingle=async e=>{
+    e.preventDefault();
+    if(!single)return;
+    setBusy(true);
+    setSRes(null);
+    try{
+      const response=await api.post("leads/verify-single/",{email:single});
+      setSRes({
+        is_valid: response.data?.is_verified === true,
+        format_valid: true,
+        mx_found: response.data?.is_verified === true,
+        disposable: false,
+        score: response.data?.is_verified === true ? 95 : 0,
+      });
+    }catch(error){
+      console.error("Single verification failed:",error);
+      setSRes({is_valid:false,format_valid:false,mx_found:false,disposable:false,score:0});
+    }finally{
+      setBusy(false);
+    }
+  };
+  const doMulti=async e=>{
+    e.preventDefault();
+    const em=multi.split(/[\n,]+/).map(x=>x.trim()).filter(Boolean);
+    if(!em.length)return;
+    setBusy(true);
+    try{
+      const response=await api.post("leads/verify-multi/",{emails:em});
+      setMRes((response.data?.results||[]).map(result=>({
+        email:result.email,
+        is_valid:result.is_verified===true,
+      })));
+    }catch(error){
+      console.error("Batch verification failed:",error);
+      setMRes([]);
+    }finally{
+      setBusy(false);
+    }
+  };
 
   return(
     <div className="vg">
@@ -962,6 +1008,23 @@ export default function Dashboard(){
     }
   };
   
+  const onExport=async()=>{
+    try{
+      const response=await api.get("leads/export/",{responseType:"blob"});
+      const url=URL.createObjectURL(response.data);
+      const link=document.createElement("a");
+      link.href=url;
+      link.download="verified_leads.csv";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }catch(error){
+      console.error("Failed to export leads:",error);
+      alert("Export failed. Please try again.");
+    }
+  };
+
   const onDel=async id=>{
     setLeads(p=>p.filter(l=>l.id!==id));
     setTotalLeads(p=>Math.max(0,p-1));
@@ -1033,7 +1096,7 @@ export default function Dashboard(){
             <div className="sb-tl">{dark?<Ic.Moon/>:<Ic.Sun/>}{dark?"Dark Mode":"Light Mode"}</div>
             <button className={`pill${dark?" on":""}`} onClick={()=>setDark(d=>!d)}/>
           </div>
-          <button className="snb" style={{color:"var(--red)",marginTop:2}}><Ic.Out/>Sign Out</button>
+          <button className="snb" style={{color:"var(--red)",marginTop:2}} onClick={logout}><Ic.Out/>Sign Out</button>
         </div>
       </aside>
 
@@ -1056,7 +1119,7 @@ export default function Dashboard(){
         </div>
 
         {tab==="generator"&&<Generator form={form} setForm={setForm} busy={busy} onGo={onGo} toggleP={toggleP}/>}
-        {tab==="leads"    &&<Leads leads={leads} onVerify={onVerify} onDelete={onDel} verifying={verifying} onExport={()=>{}}/>}
+        {tab==="leads"    &&<Leads leads={leads} onVerify={onVerify} onDelete={onDel} verifying={verifying} onExport={onExport}/>}
         {tab==="verifier" &&<Verifier/>}
         {tab==="sender"   &&<SenderOptions senderEmail={form.sender_email || SENDER_EMAIL}/>}
       </main>
