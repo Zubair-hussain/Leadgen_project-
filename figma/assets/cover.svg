@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="960" viewBox="0 0 1440 960" role="img" aria-labelledby="title desc">
+  <title id="title">LeadGen AI Figma cover</title>
+  <desc id="desc">Cover image for the LeadGen AI design handoff.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101820"/>
+      <stop offset=".58" stop-color="#182A33"/>
+      <stop offset="1" stop-color="#273940"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#C8141E"/>
+      <stop offset="1" stop-color="#C9A84C"/>
+    </linearGradient>
+  </defs>
+  <rect width="1440" height="960" fill="url(#bg)"/>
+  <rect x="96" y="92" width="1248" height="776" rx="32" fill="#F7F5EF"/>
+  <rect x="96" y="92" width="1248" height="112" rx="32" fill="#FFFFFF"/>
+  <circle cx="154" cy="148" r="12" fill="#C8141E"/>
+  <circle cx="194" cy="148" r="12" fill="#C9A84C"/>
+  <circle cx="234" cy="148" r="12" fill="#2F7D62"/>
+  <text x="292" y="158" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700">LeadGen AI Design System</text>
+  <text x="148" y="322" fill="#17212B" font-family="Inter, Arial, sans-serif" font-size="84" font-weight="800">Start meeting buyers.</text>
+  <text x="152" y="392" fill="#5C6874" font-family="Inter, Arial, sans-serif" font-size="30">Landing page, app shell, dashboards, forms, states, and prototype notes.</text>
+  <rect x="152" y="474" width="246" height="72" rx="36" fill="url(#accent)"/>
+  <text x="194" y="521" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">Figma Handoff</text>
+  <g transform="translate(696 356)">
+    <rect width="484" height="314" rx="28" fill="#FFFFFF" stroke="#D9DDD7"/>
+    <rect x="32" y="36" width="168" height="20" rx="10" fill="#17212B"/>
+    <rect x="32" y="78" width="392" height="12" rx="6" fill="#DDE3E8"/>
+    <rect x="32" y="108" width="310" height="12" rx="6" fill="#DDE3E8"/>
+    <rect x="32" y="164" width="120" height="92" rx="14" fill="#F1EDE4"/>
+    <rect x="180" y="164" width="120" height="92" rx="14" fill="#F1EDE4"/>
+    <rect x="328" y="164" width="120" height="92" rx="14" fill="#F1EDE4"/>
+    <path d="M70 228c40-58 83-10 120-58s88-52 132 4 72 6 96-26" fill="none" stroke="#C8141E" stroke-width="10" stroke-linecap="round"/>
+  </g>
+</svg>
