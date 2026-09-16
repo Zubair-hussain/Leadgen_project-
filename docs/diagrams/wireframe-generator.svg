@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+  <style>
+    .bg{fill:#FFFFFF}.card{fill:#F8FAF8;stroke:#D3D9D4;stroke-width:1.4;rx:12}
+    .field{fill:#FFFFFF;stroke:#CBD2CC;stroke-width:1.2;rx:8}
+    .plat{fill:#FFFFFF;stroke:#CBD2CC;stroke-width:1.2;rx:10}
+    .plon{fill:#EAF1EE;stroke:#0F7F74;stroke-width:1.6;rx:10}
+    .cta{fill:#0F7F74;rx:10}.ctat{fill:#fff;font-size:14px;font-weight:600}
+    .gh{fill:#FFFFFF;stroke:#CBD2CC;rx:10}
+    .h{fill:#101815;font-weight:700}.t{fill:#3C433E;font-size:13px}.s{fill:#8A938C;font-size:11.5px}
+    .cap{fill:#6B7872;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+    .lbl{fill:#6B7872;font-size:11px;font-weight:600}
+  </style>
+  <rect class="bg" width="900" height="560"/>
+  <rect x="0" y="0" width="900" height="46" fill="#F4F6F5"/>
+  <text class="cap" x="24" y="29">Wireframe — Generator tab</text>
+
+  <rect class="card" x="40" y="70" width="820" height="450"/>
+  <text class="h" x="64" y="106" font-size="17">Lead Extraction Engine</text>
+  <text class="s" x="64" y="126">Configure targeting parameters to pull high-intent contacts</text>
+
+  <!-- two selects -->
+  <text class="lbl" x="64" y="162">◷ NICHE / INDUSTRY</text>
+  <rect class="field" x="64" y="172" width="360" height="42"/>
+  <text class="s" x="80" y="198">Select niche…                                              ▾</text>
+  <text class="lbl" x="452" y="162">◍ TARGET COUNTRY</text>
+  <rect class="field" x="452" y="172" width="360" height="42"/>
+  <text class="s" x="468" y="198">Select country…                                          ▾</text>
+
+  <!-- platforms -->
+  <text class="lbl" x="64" y="252">▦ SOURCE PLATFORMS</text>
+  <rect class="plon" x="64" y="262" width="182" height="72"/>
+  <text class="t" x="80" y="292">🌐 Reddit ✓</text><text class="s" x="80" y="312">community</text>
+  <rect class="plon" x="256" y="262" width="182" height="72"/>
+  <text class="t" x="272" y="292">𝕏 X ✓</text><text class="s" x="272" y="312">real-time</text>
+  <rect class="plon" x="448" y="262" width="182" height="72"/>
+  <text class="t" x="464" y="292">◍ Google Maps ✓</text><text class="s" x="464" y="312">local biz</text>
+  <rect class="plat" x="640" y="262" width="172" height="72"/>
+  <text class="t" x="656" y="292">✦ Professional</text><text class="s" x="656" y="312">enterprise</text>
+
+  <!-- google maps engine toggle -->
+  <rect class="gh" x="64" y="352" width="748" height="60"/>
+  <text class="t" x="82" y="378">Google Maps Engine</text>
+  <text class="s" x="82" y="396">🔍 SerpAPI Standard  ⇆  ⚡ Apify Enterprise Crawler</text>
+  <rect x="740" y="368" width="48" height="26" rx="13" fill="#0F7F74"/>
+  <circle cx="775" cy="381" r="10" fill="#fff"/>
+
+  <!-- actions -->
+  <rect class="field" x="600" y="440" width="96" height="44"/>
+  <text class="t" x="632" y="467">Reset</text>
+  <rect class="cta" x="708" y="440" width="150" height="44"/>
+  <text class="ctat" x="783" y="467" text-anchor="middle">⚡ Run Extraction</text>
+  <text class="s" x="64" y="468">Required: niche + country + ≥1 platform. Posts /api/generate/.</text>
+</svg>
