@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #050505; }
+      #root {
+        position: relative; width: 100%; height: 100%;
+        background:
+          radial-gradient(1100px 620px at 50% 42%, rgba(200,20,30,0.16), transparent 62%),
+          radial-gradient(900px 900px at 50% 55%, rgba(201,168,76,0.05), transparent 60%),
+          #050505;
+        font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+        color: #f3ece6;
+        overflow: hidden;
+      }
+      /* faint dot-globe texture */
+      #dots {
+        position: absolute; inset: 0;
+        background-image: radial-gradient(rgba(239,68,68,0.16) 1.4px, transparent 1.6px);
+        background-size: 34px 34px;
+        -webkit-mask-image: radial-gradient(680px 680px at 50% 52%, #000 0%, rgba(0,0,0,0.35) 55%, transparent 72%);
+                mask-image: radial-gradient(680px 680px at 50% 52%, #000 0%, rgba(0,0,0,0.35) 55%, transparent 72%);
+        opacity: 0.5;
+      }
+      .scene {
+        position: absolute; inset: 0;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        text-align: center; opacity: 0; will-change: opacity, transform;
+      }
+      .grad {
+        background: linear-gradient(110deg, #c8141e 0%, #ef4444 46%, #c9a84c 100%);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+      }
+      .brandmark { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 700; letter-spacing: -0.01em; }
+
+      /* Scene 1 */
+      #s1 .brandmark { font-size: 168px; line-height: 1; filter: drop-shadow(0 8px 40px rgba(201,168,76,0.25)); }
+      #s1 .tagline { margin-top: 26px; font-size: 30px; font-weight: 400; color: #c9bcb1; letter-spacing: 0.01em; }
+
+      /* Scene 2 */
+      #s2 .line { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 112px; line-height: 1.06; }
+      #s2 .line1 { color: #f3ece6; }
+      #s2 .line2 { margin-top: 6px; color: #f3ece6; }
+      #s2 .win { color: #f3ece6; font-style: italic; }
+
+      /* Scene 3 — console */
+      #s3 { justify-content: center; }
+      .console {
+        width: 1180px; background: rgba(10,9,9,0.92); border: 1px solid rgba(201,168,76,0.20);
+        border-radius: 18px; padding: 34px 40px; box-shadow: 0 30px 90px rgba(0,0,0,0.55);
+        font-family: "JetBrains Mono", ui-monospace, monospace; text-align: left;
+      }
+      .console .ln { font-size: 30px; line-height: 1.9; color: #c9bcb1; white-space: nowrap; }
+      .console .d { color: #7d8b86; }
+      .console .o { color: #e0b35c; }
+      .console .ok { color: #3cd389; font-weight: 500; }
+      .rows { width: 1180px; margin-top: 22px; display: flex; flex-direction: column; gap: 14px; }
+      .row {
+        display: flex; align-items: center; justify-content: space-between;
+        background: rgba(255,255,255,0.035); border: 1px solid rgba(201,168,76,0.14);
+        border-radius: 14px; padding: 18px 26px;
+      }
+      .row .nm { font-size: 30px; font-weight: 600; color: #f3ece6; }
+      .row .mt { font-size: 20px; color: #8c7f76; font-family: "JetBrains Mono", monospace; margin-top: 3px; }
+      .row .score { font-family: "JetBrains Mono", monospace; font-size: 28px; color: #e0b35c; }
+
+      /* Scene 4 */
+      #s4 .outline { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 92px; color: #f3ece6; max-width: 1400px; }
+      #s4 .final { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 14px; }
+      #s4 .final .brandmark { font-size: 128px; line-height: 1; }
+      #s4 .credit { font-size: 26px; color: #c9bcb1; font-weight: 400; }
+      #s4 .stack { font-family: "JetBrains Mono", monospace; font-size: 18px; color: #7d8b86; letter-spacing: 0.14em; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="20" data-width="1920" data-height="1080">
+      <div id="dots"></div>
+
+      <!-- Scene 1 — wordmark hook -->
+      <section id="s1" class="scene clip" data-start="0" data-duration="20">
+        <div class="brandmark grad">LeadGen</div>
+        <div class="tagline">Find the people already looking for you.</div>
+      </section>
+
+      <!-- Scene 2 — the line -->
+      <section id="s2" class="scene clip" data-start="0" data-duration="20">
+        <div class="line line1">Stop chasing strangers.</div>
+        <div class="line line2">Start <span class="win">winning</span> buyers.</div>
+      </section>
+
+      <!-- Scene 3 — the engine -->
+      <section id="s3" class="scene clip" data-start="0" data-duration="20">
+        <div class="console">
+          <div class="ln" id="c0"><span class="d">$</span> leadgen run --niche <span class="o">"Dental clinics"</span> --area <span class="o">"Austin"</span></div>
+          <div class="ln" id="c1"><span class="d">&rarr;</span> SerpAPI: <span class="o">128 results</span></div>
+          <div class="ln" id="c2"><span class="d">&rarr;</span> 128 &gt; 100 &middot; engaging <span class="o">Apify</span> + <span class="o">Google&nbsp;SerpAPI</span></div>
+          <div class="ln" id="c3"><span class="ok">&#10003; 47 qualified leads</span></div>
+        </div>
+        <div class="rows">
+          <div class="row" id="r1">
+            <div><div class="nm">Northside Group</div><div class="mt">Austin &middot; posted a hiring ad this week</div></div>
+            <div class="score">96 / 100</div>
+          </div>
+          <div class="row" id="r2">
+            <div><div class="nm">Harbour Partners</div><div class="mt">Austin &middot; new website, no contact form</div></div>
+            <div class="score">92 / 100</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Scene 4 — outro -->
+      <section id="s4" class="scene clip" data-start="0" data-duration="20">
+        <div class="outline">Three answers in, a working list out.</div>
+        <div class="final">
+          <div class="brandmark grad">LeadGen</div>
+          <div class="credit">by Zubair Hussain</div>
+          <div class="stack">NEXT.JS &middot; DJANGO</div>
+        </div>
+      </section>
+
+      <!-- Audio -->
+      <audio id="music-bed" data-start="0" data-duration="20" data-volume="0.24" src="assets/music/bed.mp3"></audio>
+      <!-- console key ticks -->
+      <audio id="sfx-key-1" data-start="9.45" data-duration="0.3" data-volume="0.45" src="assets/sfx/key.wav"></audio>
+      <audio id="sfx-key-2" data-start="10.45" data-duration="0.3" data-volume="0.45" src="assets/sfx/key.wav"></audio>
+      <audio id="sfx-key-3" data-start="11.45" data-duration="0.3" data-volume="0.45" src="assets/sfx/key.wav"></audio>
+      <!-- payoff check -->
+      <audio id="sfx-payoff" data-start="12.6" data-duration="0.15" data-volume="0.4" src="assets/sfx/accent.ogg"></audio>
+      <!-- lead rows -->
+      <audio id="sfx-row-1" data-start="13.5" data-duration="0.15" data-volume="0.5" src="assets/sfx/drop.ogg"></audio>
+      <audio id="sfx-row-2" data-start="14.3" data-duration="0.15" data-volume="0.5" src="assets/sfx/drop.ogg"></audio>
+      <!-- final wordmark -->
+      <audio id="sfx-final" data-start="18.15" data-duration="0.15" data-volume="0.38" src="assets/sfx/accent.ogg"></audio>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // initial states
+      gsap.set(["#s1", "#s2", "#s3", "#s4"], { opacity: 0 });
+      gsap.set("#s2 .win", { color: "#f3ece6" });
+      gsap.set(["#c0", "#c1", "#c2", "#c3"], { opacity: 0, y: 8 });
+      gsap.set(["#r1", "#r2"], { opacity: 0, x: 20 });
+      gsap.set("#s4 .final", { opacity: 0 });
+
+      // ---- Scene 1 (0–4) ----
+      tl.to("#s1", { opacity: 1, duration: 0.6, ease: "power1.out" }, 0.1);
+      tl.from("#s1 .brandmark", { scale: 0.93, opacity: 0, duration: 1.0, ease: "power2.out" }, 0.1); // beat-locked: settle
+      tl.from("#s1 .tagline", { y: 16, opacity: 0, duration: 0.7, ease: "power2.out" }, 0.85);
+      tl.to("#s1", { opacity: 0, duration: 0.6, ease: "power1.inOut" }, 3.7);
+
+      // ---- Scene 2 (4–9) ----
+      tl.to("#s2", { opacity: 1, duration: 0.6, ease: "power1.out" }, 3.9);
+      tl.from("#s2 .line1", { y: 22, opacity: 0, duration: 0.7, ease: "power2.out" }, 4.3);
+      tl.from("#s2 .line2", { y: 22, opacity: 0, duration: 0.7, ease: "power2.out" }, 5.9);
+      tl.to("#s2 .win", { color: "#e0b35c", duration: 0.6, ease: "power1.inOut" }, 6.7); // "winning" shifts to brass
+      tl.to("#s2", { opacity: 0, duration: 0.6, ease: "power1.inOut" }, 8.6);
+
+      // ---- Scene 3 (9–16) — console + rows ----
+      tl.to("#s3", { opacity: 1, duration: 0.5, ease: "power1.out" }, 8.9);
+      tl.to("#c0", { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 9.4);
+      tl.to("#c1", { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 10.4); // beat-grid
+      tl.to("#c2", { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, 11.4); // beat-grid
+      tl.to("#c3", { opacity: 1, y: 0, duration: 0.45, ease: "back.out(1.6)" }, 12.6); // beat-locked: payoff
+      tl.to("#r1", { opacity: 1, x: 0, duration: 0.45, ease: "power2.out" }, 13.5);
+      tl.to("#r2", { opacity: 1, x: 0, duration: 0.45, ease: "power2.out" }, 14.3);
+      tl.to("#s3", { opacity: 0, duration: 0.6, ease: "power1.inOut" }, 15.5);
+
+      // ---- Scene 4 (16–20) — outro ----
+      tl.to("#s4", { opacity: 1, duration: 0.6, ease: "power1.out" }, 15.8);
+      tl.from("#s4 .outline", { y: 18, opacity: 0, duration: 0.7, ease: "power2.out" }, 16.2);
+      tl.to("#s4 .outline", { opacity: 0, duration: 0.4, ease: "power1.inOut" }, 17.7);
+      tl.fromTo("#s4 .final", { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" }, 18.25); // beat-locked: final
+      tl.to("#s4", { opacity: 0, duration: 0.7, ease: "power1.inOut" }, 19.3);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

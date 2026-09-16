@@ -1,14 +1,31 @@
-# Vercel deploys only the static landing page (leadgen.html).
-# Exclude the application source, builds, docs, and tooling from the upload.
+# Vercel deploys ONLY the static HTML site:
+#   index.html, blog/**, robots.txt, sitemap.xml  (+ vercel.json config)
+# Everything else in this monorepo is excluded from the upload.
+
+# Applications & tooling
 backend/
 leadgen-frontend/
 n8n/
+.github/
+.git/
+
+# Docs, design & records (not part of the deployed site)
 docs/
 evidences/
 records/
 logs/
-.github/
-.git/
+figma/
+notion/
+
+# Non-site root files
+README.md
+CONTRIBUTING.md
+LICENSE
+docker-compose.yml
+.editorconfig
+.nvmrc
+
+# Build/runtime artifacts
 **/node_modules/
 **/.next/
 **/out/

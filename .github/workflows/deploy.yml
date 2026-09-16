@@ -1,6 +1,6 @@
 name: Deploy landing page (Vercel)
 
-# Deploys the static landing page (leadgen.html) to Vercel.
+# Deploys the static landing page (index.html) to Vercel.
 # Requires three repository secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID.
 # If they are not set, the job skips cleanly (e.g. when using Vercel's native
 # Git integration instead of this workflow).
@@ -9,7 +9,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'leadgen.html'
+      - 'index.html'
       - 'vercel.json'
       - '.vercelignore'
       - '.github/workflows/deploy.yml'

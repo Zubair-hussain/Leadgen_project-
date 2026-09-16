@@ -7,6 +7,7 @@ This folder is the operating handbook for the lead generation project.
 - `wireframes.md`: wireframes (SVG) for every primary screen.
 - `diagrams/`: source SVGs for architecture, infrastructure, and wireframes.
 - `onboarding.md`: local setup and developer workflow.
+- `admin-and-keys.md`: every API key/env var in one table, and how to open the admin panel.
 - `security.md`: security model, secrets, JWT auth flow, CORS, deployment guardrails.
 - `testing.md`: how tests, linting, coverage, and CI checks are expected to run.
 - `operations.md`: runtime services, Celery, Docker, and incident notes.

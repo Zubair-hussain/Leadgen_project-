@@ -1,0 +1,9 @@
+Three answers in, a working list of buyers out. 🔎
+
+LeadGen finds the people already looking for you — multi-source discovery (SerpAPI → Apify + Google), email verification, and deliverability scoring. Pick a niche, an area, a channel; get a short, scored list of buyers.
+
+Built with Next.js + Django. Demo + code below.
+
+— Zubair Hussain
+
+#leadgen #b2b #sales #nextjs #django #buildinpublic

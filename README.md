@@ -14,7 +14,7 @@ score sender deliverability — behind Google sign-in with owner-scoped data.
 
 > **Animation Preview:** the landing page hero uses the exact
 > **meeting -> booking -> closing -> winning -> signing** rotating word pill from
-> [`leadgen.html`](leadgen.html). See [Landing page animations](#landing-page-animations).
+> [`index.html`](index.html). See [Landing page animations](#landing-page-animations).
 >
 > ![Animated landing headline preview](docs/assets/landing-word-pill.svg)
 
@@ -175,6 +175,9 @@ are ever stored in client code or the repo.
 - The Django admin panel lives at `/admin/`. Provider API keys stay in
   `backend/.env` (or Vercel/host env), never in the browser.
 
+**Full reference:** every key/env var and a step-by-step admin guide are in
+[docs/admin-and-keys.md](docs/admin-and-keys.md).
+
 > Optional job sources (LinkedIn, Upwork) are documented as add-on **Apify Store
 > actors** in the [blog](blog/how-to-get-apify-token.html) — configure them with
 > your Apify token and each site's compliance rules. They are not bundled
@@ -222,9 +225,9 @@ Gemini) that power the backend's lead sources.
 
 ### Landing page → Vercel (static)
 
-`leadgen.html` is a self-contained static landing page deployed to **Vercel**.
+`index.html` is a self-contained static landing page deployed to **Vercel**.
 
-- [`vercel.json`](vercel.json) rewrites `/` → `/leadgen.html` and adds security
+- [`vercel.json`](vercel.json) adds security
   headers; [`.vercelignore`](.vercelignore) limits the upload to the static page
   (the app source, builds, and docs are excluded).
 - **Option A — Vercel Git integration (simplest):** import the repo in Vercel,
@@ -250,7 +253,7 @@ The landing page ships SEO out of the box: meta description/keywords, Open Graph
 + Twitter cards, and JSON-LD structured data (`Person` for Zubair Hussain +
 `SoftwareApplication`), plus [`robots.txt`](robots.txt) and
 [`sitemap.xml`](sitemap.xml). After the first deploy, replace `YOUR-DOMAIN` in
-`robots.txt`, `sitemap.xml`, and the canonical/OG block in `leadgen.html` with
+`robots.txt`, `sitemap.xml`, and the canonical/OG block in `index.html` with
 your real host.
 
 The [`blog/`](blog/) folder adds 7 SEO-optimized articles (each with `BlogPosting`
@@ -260,7 +263,7 @@ lead-generation primer, email deliverability, and n8n automation — all listed 
 
 ### Landing page animations
 
-[`leadgen.html`](leadgen.html) includes the landing-page motion system:
+[`index.html`](index.html) includes the landing-page motion system:
 
 - **Hero rotating word pill:** the headline animates as a real visual preview:
 
@@ -359,7 +362,7 @@ Leadgen_project-/
 ├── records/                 # remediation register & verification notes
 ├── logs/                    # local runtime logs (git-ignored)
 ├── .github/workflows/       # CI, hygiene, Vercel deploy, weekly security, SEO audit
-├── leadgen.html             # static landing page (deployed to Vercel)
+├── index.html             # static landing page (deployed to Vercel)
 ├── blog/                    # 7 SEO articles + index (JSON-LD)
 ├── vercel.json              # Vercel static config (rewrites + headers)
 ├── robots.txt · sitemap.xml # SEO
@@ -373,6 +376,7 @@ Leadgen_project-/
 - [docs/architecture.md](docs/architecture.md) — architecture & diagrams
 - [docs/infrastructure.md](docs/infrastructure.md) — containers & deployment
 - [docs/wireframes.md](docs/wireframes.md) — screen wireframes
+- [docs/admin-and-keys.md](docs/admin-and-keys.md) — all keys/env vars + admin guide
 - [docs/security.md](docs/security.md) — auth & security model
 - [docs/onboarding.md](docs/onboarding.md) — developer setup
 - [docs/testing.md](docs/testing.md) — quality gates
