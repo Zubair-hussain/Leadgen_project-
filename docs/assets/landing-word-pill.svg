@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="240" viewBox="0 0 960 240" role="img" aria-labelledby="title desc">
+  <title id="title">Smooth animated LeadGen headline word pill</title>
+  <desc id="desc">A smooth preview of the rotating meeting, booking, closing, winning, signing buyers animation.</desc>
+  <defs>
+    <linearGradient id="pageBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07090c"/>
+      <stop offset=".52" stop-color="#100d0e"/>
+      <stop offset="1" stop-color="#17110f"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-55%" width="150%" height="220%">
+      <feDropShadow dx="0" dy="20" stdDeviation="20" flood-color="#000000" flood-opacity=".32"/>
+    </filter>
+    <clipPath id="wordMask">
+      <rect x="267" y="66" width="210" height="88" rx="18"/>
+    </clipPath>
+    <style>
+      .headline {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 60px;
+        font-style: italic;
+        font-weight: 700;
+        letter-spacing: -1.8px;
+      }
+
+      .pill-shell {
+        transform-origin: 246px 110px;
+        animation: shellColor 13s cubic-bezier(.62,.04,.2,1) infinite,
+                   shellWidth 13s cubic-bezier(.62,.04,.2,1) infinite;
+      }
+
+      .pill-dot {
+        transform-origin: 250px 110px;
+        animation: dotColor 13s cubic-bezier(.62,.04,.2,1) infinite,
+                   dotPulse 2.6s ease-out infinite;
+      }
+
+      .word {
+        font-family: Inter, Arial, sans-serif;
+        font-size: 48px;
+        font-weight: 800;
+        letter-spacing: -1.6px;
+        opacity: 0;
+        transform-box: fill-box;
+        transform-origin: center;
+        animation-duration: 13s;
+        animation-timing-function: cubic-bezier(.62,.04,.2,1);
+        animation-iteration-count: infinite;
+      }
+
+      .meeting { fill: rgb(200,20,30); animation-name: wordA; }
+      .booking { fill: rgb(239,68,68); animation-name: wordB; }
+      .closing { fill: rgb(201,168,76); animation-name: wordC; }
+      .winning { fill: rgb(174,29,55); animation-name: wordD; }
+      .signing { fill: rgb(138,110,47); animation-name: wordE; }
+
+      @keyframes shellColor {
+        0%, 16% { fill: rgba(200,20,30,.16); }
+        20%, 36% { fill: rgba(239,68,68,.16); }
+        40%, 56% { fill: rgba(201,168,76,.17); }
+        60%, 76% { fill: rgba(174,29,55,.17); }
+        80%, 96% { fill: rgba(138,110,47,.18); }
+        100% { fill: rgba(200,20,30,.16); }
+      }
+
+      @keyframes shellWidth {
+        0%, 16% { width: 270px; }
+        20%, 36% { width: 266px; }
+        40%, 56% { width: 252px; }
+        60%, 76% { width: 266px; }
+        80%, 96% { width: 244px; }
+        100% { width: 270px; }
+      }
+
+      @keyframes dotColor {
+        0%, 16% { fill: rgb(200,20,30); }
+        20%, 36% { fill: rgb(239,68,68); }
+        40%, 56% { fill: rgb(201,168,76); }
+        60%, 76% { fill: rgb(174,29,55); }
+        80%, 96% { fill: rgb(138,110,47); }
+        100% { fill: rgb(200,20,30); }
+      }
+
+      @keyframes dotPulse {
+        0% { r: 7; opacity: 1; }
+        55% { r: 13; opacity: .35; }
+        100% { r: 7; opacity: 1; }
+      }
+
+      @keyframes wordA {
+        0%, 16% { opacity: 1; transform: translateY(0); }
+        20%, 96% { opacity: 0; transform: translateY(-54px); }
+        97% { opacity: 0; transform: translateY(54px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes wordB {
+        0%, 16% { opacity: 0; transform: translateY(54px); }
+        20%, 36% { opacity: 1; transform: translateY(0); }
+        40%, 100% { opacity: 0; transform: translateY(-54px); }
+      }
+
+      @keyframes wordC {
+        0%, 36% { opacity: 0; transform: translateY(54px); }
+        40%, 56% { opacity: 1; transform: translateY(0); }
+        60%, 100% { opacity: 0; transform: translateY(-54px); }
+      }
+
+      @keyframes wordD {
+        0%, 56% { opacity: 0; transform: translateY(54px); }
+        60%, 76% { opacity: 1; transform: translateY(0); }
+        80%, 100% { opacity: 0; transform: translateY(-54px); }
+      }
+
+      @keyframes wordE {
+        0%, 76% { opacity: 0; transform: translateY(54px); }
+        80%, 96% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-54px); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .pill-shell, .pill-dot, .word { animation: none; }
+        .meeting { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+  </defs>
+
+  <rect width="960" height="240" rx="30" fill="url(#pageBg)"/>
+  <circle cx="810" cy="42" r="110" fill="#c9a84c" opacity=".05"/>
+  <circle cx="100" cy="205" r="120" fill="#c8141e" opacity=".07"/>
+
+  <text class="headline" x="82" y="132" fill="#f5efe7">Start</text>
+
+  <g filter="url(#softShadow)">
+    <rect class="pill-shell" x="226" y="66" width="270" height="88" rx="22"/>
+    <circle class="pill-dot" cx="250" cy="110" r="7"/>
+    <g clip-path="url(#wordMask)">
+      <text class="word meeting" x="267" y="126">meeting</text>
+      <text class="word booking" x="267" y="126">booking</text>
+      <text class="word closing" x="267" y="126">closing</text>
+      <text class="word winning" x="267" y="126">winning</text>
+      <text class="word signing" x="267" y="126">signing</text>
+    </g>
+  </g>
+
+  <text class="headline" x="520" y="132" fill="#f5efe7">buyers.</text>
+  <text x="83" y="183" fill="#aaa096" font-family="Inter, Arial, sans-serif" font-size="18">
+    Smooth preview of the leadgen.html hero: morphing pill width, sliding word swap, color shift, pulsing dot.
+  </text>
+</svg>
