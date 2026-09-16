@@ -1,8 +1,21 @@
 from django.urls import path
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView,
+    TokenBlacklistView,
+)
 from . import views
 
 urlpatterns = [
     path('health/', views.health_check, name='health'),
+
+    # JWT authentication (Django SimpleJWT)
+    path('token/', TokenObtainPairView.as_view(), name='token-obtain-pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token-refresh'),
+    path('token/verify/', TokenVerifyView.as_view(), name='token-verify'),
+    path('token/blacklist/', TokenBlacklistView.as_view(), name='token-blacklist'),
+    path('token/firebase/', views.FirebaseTokenExchangeView.as_view(), name='token-firebase-exchange'),
     path('leads/', views.LeadListView.as_view(), name='lead-list'),
     path('leads/export/', views.export_leads, name='leads-export'),
     path('leads/bulk-verify/', views.BulkVerifyLeadsView.as_view(), name='bulk-verify-leads'),
