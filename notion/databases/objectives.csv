@@ -1,0 +1,6 @@
+Objective,Measurement,Scope,Target,Owner,Status,Definition of Done
+Secure authenticated API,"All non-health API routes require auth; owner-scoped data enforced",Backend API and data access,"0 anonymous access paths to lead data",Engineering,Ready for QA,"Security tests pass and code review confirms route permissions"
+Reliable lead generation,"Generation returns stored owner-scoped leads with provider failures isolated",Generator workflow,"95% successful internal test runs",Engineering,Ready for QA,"Automated tests pass and failure states are visible in UI"
+Smooth landing animation,"Hero word pill matches leadgen.html words and timing",Landing page and README preview,"No visual stutter in desktop preview",Design,Done,"Animated preview exists in README and docs asset"
+Importable project workspace,"Notion pages and CSV databases import without cleanup",Project documentation,"100% of planning pages import into Notion",Product,In progress,"Dashboard, plans, risks, roadmap, and launch checklist are present"
+Figma-ready design handoff,"Visual assets cover landing, dashboard, mobile, components",Design folder,"4 or more visual mockups ready for Figma import",Design,In progress,"Assets are present and referenced from Figma README"
