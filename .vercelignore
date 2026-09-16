@@ -1,0 +1,15 @@
+# Vercel deploys only the static landing page (leadgen.html).
+# Exclude the application source, builds, docs, and tooling from the upload.
+backend/
+leadgen-frontend/
+n8n/
+docs/
+evidences/
+records/
+logs/
+.github/
+.git/
+**/node_modules/
+**/.next/
+**/out/
+**/__pycache__/
