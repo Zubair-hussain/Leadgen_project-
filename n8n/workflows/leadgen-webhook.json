@@ -1,0 +1,96 @@
+{
+  "name": "LeadGen — Webhook (on-demand)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "leadgen",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-in",
+      "name": "Webhook POST /leadgen",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-40, 300],
+      "webhookId": "leadgen-generate",
+      "notes": "The optional UI (n8n/ui) POSTs { category, location } here. Copy this node's Production URL into the UI's NEXT_PUBLIC_N8N_WEBHOOK_URL."
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            { "id": "a1", "name": "apiBase", "value": "http://localhost:8000/api", "type": "string" },
+            { "id": "a2", "name": "username", "value": "REPLACE_WITH_DJANGO_USERNAME", "type": "string" },
+            { "id": "a3", "name": "password", "value": "REPLACE_WITH_DJANGO_PASSWORD", "type": "string" },
+            { "id": "a4", "name": "category", "value": "={{ $json.body.category || 'Dentists' }}", "type": "string" },
+            { "id": "a5", "name": "location", "value": "={{ $json.body.location || 'Austin' }}", "type": "string" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-config",
+      "name": "Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [180, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.apiBase }}/token/",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"username\": \"{{ $json.username }}\",\n  \"password\": \"{{ $json.password }}\"\n}",
+        "options": {}
+      },
+      "id": "http-token",
+      "name": "Get JWT (POST /token/)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [420, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').item.json.apiBase }}/generate/",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $json.access }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"category\": \"{{ $('Config').item.json.category }}\",\n  \"niche\": \"{{ $('Config').item.json.category }}\",\n  \"platforms\": [\"reddit\", \"google-maps\"],\n  \"target_location\": \"{{ $('Config').item.json.location }}\",\n  \"is_professional\": false\n}",
+        "options": {}
+      },
+      "id": "http-generate",
+      "name": "Generate Leads (POST /generate/)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"message\": $json.message, \"count\": ($json.leads || []).length, \"leads\": $json.leads } }}",
+        "options": {}
+      },
+      "id": "respond",
+      "name": "Respond with leads",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [900, 300]
+    }
+  ],
+  "connections": {
+    "Webhook POST /leadgen": { "main": [[{ "node": "Config", "type": "main", "index": 0 }]] },
+    "Config": { "main": [[{ "node": "Get JWT (POST /token/)", "type": "main", "index": 0 }]] },
+    "Get JWT (POST /token/)": { "main": [[{ "node": "Generate Leads (POST /generate/)", "type": "main", "index": 0 }]] },
+    "Generate Leads (POST /generate/)": { "main": [[{ "node": "Respond with leads", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "tags": [{ "name": "leadgen" }]
+}
