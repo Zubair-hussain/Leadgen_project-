@@ -1,0 +1,18 @@
+name: Repository Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+jobs:
+  hygiene:
+    name: Hygiene checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Block committed runtime artifacts
+        run: |
+          ! git ls-files | grep -E '(^|/)(__pycache__|.*\.pyc$|.*\.log$|\.env$|credentials\.json$)'
+      - name: Validate Docker Compose config
+        run: docker compose config
