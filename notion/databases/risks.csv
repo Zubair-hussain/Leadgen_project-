@@ -1,0 +1,6 @@
+Risk,Category,Probability,Impact,Owner,Mitigation,Status
+Provider API rate limits,Operations,Medium,High,Engineering,"Use Celery retries, cache results, and expose graceful error states",Open
+Leads visible across users,Security,Low,Critical,Engineering,"Owner foreign key, authenticated routes, and scoped querysets",Mitigated
+Frontend env misconfiguration,Operations,Medium,Medium,Engineering,"Document env examples and fail loudly when API URL is missing",Mitigated
+Email verification false positives,Product,Medium,Medium,Product,"Show confidence and reason fields instead of binary-only claims",Open
+Design drift between HTML and app,Design,Medium,Medium,Design,"Maintain Figma assets and README animation preview",Open
