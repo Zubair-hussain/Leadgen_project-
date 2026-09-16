@@ -1,0 +1,330 @@
+Captured: 2026-09-16T11:28:48Z
+
+ RUN  v4.1.11 C:/Users/Zubair Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend
+      Coverage enabled with istanbul
+
+ ✓ src/services/api.test.jsx > api service > attaches the Firebase token when no Django JWT is stored 904ms
+ ✓ src/services/api.test.jsx > api service > prefers a stored Django JWT over the Firebase token 5ms
+ ✓ src/services/api.test.jsx > api service > leaves headers untouched when no user and no JWT 3ms
+ ✓ src/services/api.test.jsx > api service > stores and clears tokens 3ms
+ ✓ src/services/api.test.jsx > api service > exchanges a Firebase user for a Django JWT pair 6ms
+ ✓ src/services/api.test.jsx > api service > throws when exchanging without a signed-in user 5ms
+ ✓ src/services/api.test.jsx > api service > normalises the base URL to a trailing slash 2ms
+ ✓ src/services/api.test.jsx > api service > reports connected on a healthy backend 2ms
+ ✓ src/services/api.test.jsx > api service > reports disconnected when the health check throws 3ms
+ ✓ src/services/api.test.jsx > api service > refreshes the JWT and replays the request on a 401 5ms
+ ✓ src/services/api.test.jsx > api service > clears tokens when the refresh itself fails 2ms
+ ✓ src/views/Dashboard.test.jsx > Dashboard > loads leads and the sender identity on mount 606ms
+ ✓ src/views/Dashboard.test.jsx > Dashboard > validates the generator form and alerts when niche is missing 341ms
+stdout | src/views/Dashboard.test.jsx > Dashboard > submits a valid generation request
+📤 Sending lead generation request: {
+  category: 'SaaS',
+  platforms: [ 'reddit', 'x', 'google-maps' ],
+  location: 'US',
+  is_professional: false
+}
+
+stdout | src/views/Dashboard.test.jsx > Dashboard > submits a valid generation request
+✅ Response received: { leads: [], message: 'done' }
+
+ ✓ src/views/Dashboard.test.jsx > Dashboard > submits a valid generation request 380ms
+Error: Not implemented: navigation (except hash changes)
+    at module.exports (C:\Users\Zubair Hussain\Desktop\leadgen\Leadgen_project-\leadgen-frontend\node_modules\jsdom\lib\jsdom\browser\not-implemented.js:9:17)
+    at navigateFetch (C:\Users\Zubair Hussain\Desktop\leadgen\Leadgen_project-\leadgen-frontend\node_modules\jsdom\lib\jsdom\living\window\navigation.js:77:3)
+    at exports.navigate (C:\Users\Zubair Hussain\Desktop\leadgen\Leadgen_project-\leadgen-frontend\node_modules\jsdom\lib\jsdom\living\window\navigation.js:55:3)
+    at Timeout._onTimeout (C:\Users\Zubair Hussain\Desktop\leadgen\Leadgen_project-\leadgen-frontend\node_modules\jsdom\lib\jsdom\living\nodes\HTMLHyperlinkElementUtils-impl.js:81:7)
+    at listOnTimeout (node:internal/timers:581:17)
+    at processTimers (node:internal/timers:519:7) undefined
+ ✓ src/views/Dashboard.test.jsx > Dashboard > switches to the Leads tab and exports CSV 328ms
+ ✓ src/views/Dashboard.test.jsx > Dashboard > verifies a lead from the Leads tab 304ms
+ ✓ src/components/layout/Sidebar.test.jsx > Sidebar > renders the navigation items 291ms
+ ✓ src/views/Login.test.jsx > Login > renders the hero content and sign-in button 459ms
+ ✓ src/components/features/GeneratorForm.test.jsx > GeneratorForm > renders headline and platform choices 297ms
+ ✓ src/components/features/LeadsTable.test.jsx > LeadsTable > renders the empty state with no leads 259ms
+ ✓ src/views/Dashboard.test.jsx > Dashboard > deletes a lead from the Leads tab 314ms
+ ✓ src/components/features/VerifierTab.test.jsx > VerifierTab > renders the four verification methods 388ms
+ ✓ src/views/Dashboard.test.jsx > Dashboard > filters leads with the search box 248ms
+ ✓ src/components/features/LeadsTable.test.jsx > LeadsTable > renders lead rows and verified/pending counts 261ms
+ ✓ src/views/Dashboard.test.jsx > Dashboard > verifies a single email in the Verifier tab 213ms
+ ✓ src/views/Login.test.jsx > Login > signs in successfully 421ms
+ ✓ src/components/layout/Sidebar.test.jsx > Sidebar > switches tabs when an item is clicked 409ms
+ ✓ src/components/features/GeneratorForm.test.jsx > GeneratorForm > updates the niche field 509ms
+stderr | src/views/Login.test.jsx > Login > still signs in when the JWT exchange fails
+JWT exchange failed; falling back to Firebase token Error: backend down
+    at C:/Users/Zubair Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/src/views/Login.test.jsx:52:45
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64
+
+ ✓ src/views/Dashboard.test.jsx > Dashboard > runs a batch verify in the Verifier tab 233ms
+ ✓ src/components/layout/Sidebar.test.jsx > Sidebar > toggles dark mode 372ms
+ ✓ src/components/features/LeadsTable.test.jsx > LeadsTable > exports when the export button is clicked 452ms
+ ✓ src/components/features/VerifierTab.test.jsx > VerifierTab > updates the single email input 554ms
+ ✓ src/views/Login.test.jsx > Login > still signs in when the JWT exchange fails 443ms
+ ✓ src/components/layout/Sidebar.test.jsx > Sidebar > shows Light Mode label when dark mode is active 112ms
+ ✓ src/components/features/GeneratorForm.test.jsx > GeneratorForm > updates the location field 440ms
+ ✓ src/views/Dashboard.test.jsx > Dashboard > runs a deliverability policy check in the Sender tab 295ms
+ ✓ src/components/features/LeadsTable.test.jsx > LeadsTable > verifies an unverified lead 340ms
+stderr | src/views/Login.test.jsx > Login > shows an error toast on failed sign-in
+Login failed Error: nope
+    at C:/Users/Zubair Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/src/views/Login.test.jsx:59:39
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64
+
+ ✓ src/views/Login.test.jsx > Login > shows an error toast on failed sign-in 372ms
+ ✓ src/components/features/VerifierTab.test.jsx > VerifierTab > submits the single verify form 426ms
+ ✓ src/components/features/LeadsTable.test.jsx > LeadsTable > shows a verifying spinner state 153ms
+ ✓ src/components/layout/Sidebar.test.jsx > Sidebar > logs out 343ms
+ ✓ src/components/layout/Sidebar.test.jsx > Sidebar > closes on mobile when a tab is selected 194ms
+ ✓ src/components/features/GeneratorForm.test.jsx > GeneratorForm > toggles a platform on click 206ms
+ ✓ src/components/features/LeadsTable.test.jsx > LeadsTable > deletes a lead 196ms
+ ✓ src/components/features/LeadsTable.test.jsx > LeadsTable > renders the host name for a lead with a link 107ms
+ ✓ src/components/features/VerifierTab.test.jsx > VerifierTab > runs a bulk audit 244ms
+ ✓ src/components/features/GeneratorForm.test.jsx > GeneratorForm > disables submit until required fields are filled 237ms
+stdout | src/views/Dashboard.test.jsx > Dashboard > shows an alert when generation returns leads
+📤 Sending lead generation request: {
+  category: 'SaaS',
+  platforms: [ 'reddit', 'x', 'google-maps' ],
+  location: 'US',
+  is_professional: false
+}
+
+stdout | src/views/Dashboard.test.jsx > Dashboard > shows an alert when generation returns leads
+✅ Response received: { leads: [ { id: 9, email: 'new@x.com' } ] }
+
+stdout | src/views/Dashboard.test.jsx > Dashboard > shows an alert when generation returns leads
+✅ Added 1 leads via SerpAPI
+
+ ✓ src/views/Dashboard.test.jsx > Dashboard > surfaces a deliverability policy error 410ms
+ ✓ src/components/features/VerifierTab.test.jsx > VerifierTab > runs a batch verify from pasted emails 214ms
+ ✓ src/components/features/VerifierTab.test.jsx > VerifierTab > shows a positive single result 98ms
+ ✓ src/views/Dashboard.test.jsx > Dashboard > shows an alert when generation returns leads 247ms
+ ✓ src/components/features/GeneratorForm.test.jsx > GeneratorForm > enables submit and calls handleGenerate when valid 280ms
+ ✓ src/components/features/VerifierTab.test.jsx > VerifierTab > shows a negative single result 111ms
+ ✓ src/components/features/GeneratorForm.test.jsx > GeneratorForm > reveals the professional toggle when google-maps is selected 133ms
+ ✓ src/components/features/GeneratorForm.test.jsx > GeneratorForm > does not show the professional toggle without google-maps 75ms
+ ✓ src/components/features/GeneratorForm.test.jsx > GeneratorForm > shows the scanning hint while busy 92ms
+stdout | src/views/Dashboard.test.jsx > Dashboard > alerts when generation returns no leads
+📤 Sending lead generation request: {
+  category: 'SaaS',
+  platforms: [ 'reddit', 'x', 'google-maps' ],
+  location: 'US',
+  is_professional: false
+}
+
+stdout | src/views/Dashboard.test.jsx > Dashboard > alerts when generation returns no leads
+✅ Response received: { leads: [] }
+
+ ✓ src/views/Dashboard.test.jsx > Dashboard > toggles dark mode and signs out 150ms
+ ✓ src/components/features/VerifierTab.test.jsx > VerifierTab > renders the results table with valid/invalid counts 211ms
+ ✓ src/components/features/VerifierTab.test.jsx > VerifierTab > handles a file upload 189ms
+stdout | src/views/Dashboard.test.jsx > Dashboard > alerts on a generation error
+📤 Sending lead generation request: {
+  category: 'SaaS',
+  platforms: [ 'reddit', 'x', 'google-maps' ],
+  location: 'US',
+  is_professional: false
+}
+
+stderr | src/views/Dashboard.test.jsx > Dashboard > alerts on a generation error
+❌ Lead generation error: { response: { data: { error: 'server boom' } } }
+
+ ✓ src/views/Dashboard.test.jsx > Dashboard > alerts when generation returns no leads 265ms
+ ✓ src/components/features/VerifierTab.test.jsx > VerifierTab > disables action buttons while busy 102ms
+ ✓ src/views/Dashboard.test.jsx > Dashboard > alerts on a generation error 238ms
+stderr | src/views/Dashboard.test.jsx > Dashboard > alerts when CSV export fails
+Failed to export leads: Error: nope
+    at Object.<anonymous> (C:/Users/Zubair Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/src/views/Dashboard.test.jsx:215:65)
+    at Object.get (file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/spy/dist/index.js:332:34)
+    at onExport (C:/Users/Zubair Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/src/views/Dashboard.jsx:1013:32)
+    at executeDispatch (C:\Users\Zubair Hussain\Desktop\leadgen\Leadgen_project-\leadgen-frontend\node_modules\react-dom\cjs\react-dom-client.development.js:19116:9)
+    at runWithFiberInDEV (C:\Users\Zubair Hussain\Desktop\leadgen\Leadgen_project-\leadgen-frontend\node_modules\react-dom\cjs\react-dom-client.development.js:874:13)
+    at processDispatchQueue (C:\Users\Zubair Hussain\Desktop\leadgen\Leadgen_project-\leadgen-frontend\node_modules\react-dom\cjs\react-dom-client.development.js:19166:19)
+    at C:\Users\Zubair Hussain\Desktop\leadgen\Leadgen_project-\leadgen-frontend\node_modules\react-dom\cjs\react-dom-client.development.js:19767:9
+    at batchedUpdates$1 (C:\Users\Zubair Hussain\Desktop\leadgen\Leadgen_project-\leadgen-frontend\node_modules\react-dom\cjs\react-dom-client.development.js:3255:40)
+    at dispatchEventForPluginEventSystem (C:\Users\Zubair Hussain\Desktop\leadgen\Leadgen_project-\leadgen-frontend\node_modules\react-dom\cjs\react-dom-client.development.js:19320:7)
+    at dispatchEvent (C:\Users\Zubair Hussain\Desktop\leadgen\Leadgen_project-\leadgen-frontend\node_modules\react-dom\cjs\react-dom-client.development.js:23585:11)
+
+ ✓ src/components/ui/Button.test.jsx > Button > renders its children 275ms
+ ✓ src/components/ui/Button.test.jsx > Button > fires onClick when enabled 120ms
+ ✓ src/components/ui/Button.test.jsx > Button > does not fire onClick when disabled 50ms
+ ✓ src/components/ui/Button.test.jsx > Button > applies the primary variant 25ms
+ ✓ src/components/ui/Button.test.jsx > Button > applies the secondary variant 15ms
+ ✓ src/views/Dashboard.test.jsx > Dashboard > alerts when CSV export fails 229ms
+ ✓ src/components/ui/Button.test.jsx > Button > applies the accent variant 16ms
+ ✓ src/components/ui/Button.test.jsx > Button > merges extra className 17ms
+ ✓ src/views/Dashboard.test.jsx > Dashboard > resets the generator form 153ms
+ ✓ src/views/Dashboard.test.jsx > Dashboard > toggles dark mode from the topbar 97ms
+stderr | src/views/Dashboard.test.jsx > Dashboard > recovers from a failed initial load
+Failed to fetch sender settings: Error: down
+    at C:/Users/Zubair Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/src/views/Dashboard.test.jsx:253:35
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64
+Failed to fetch leads: Error: down
+    at C:/Users/Zubair Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/src/views/Dashboard.test.jsx:253:35
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10)
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10)
+    at file:///C:/Users/Zubair%20Hussain/Desktop/leadgen/Leadgen_project-/leadgen-frontend/node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64
+
+ ✓ src/views/Dashboard.test.jsx > Dashboard > opens and closes the mobile menu 90ms
+ ✓ src/views/Dashboard.test.jsx > Dashboard > recovers from a failed initial load 59ms
+ ✓ src/hooks/useAuthUser.test.jsx > useAuthUser > is loading until the first auth callback 56ms
+ ✓ src/hooks/useAuthUser.test.jsx > useAuthUser > returns the user when signed in 10ms
+ ✓ src/hooks/useAuthUser.test.jsx > useAuthUser > returns null when signed out 6ms
+ ✓ src/hooks/useAuthUser.test.jsx > useAuthUser > unsubscribes on unmount 4ms
+ ✓ src/components/ConnectionStatus.test.jsx > ConnectionStatus > shows the checking state before the first result resolves 65ms
+stderr | src/components/ConnectionStatus.test.jsx > ConnectionStatus > polls the backend on an interval
+An update to ConnectionStatus inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConnectionStatus inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/ConnectionStatus.test.jsx > ConnectionStatus > polls the backend on an interval
+An update to ConnectionStatus inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/ConnectionStatus.test.jsx > ConnectionStatus > polls the backend on an interval
+An update to ConnectionStatus inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConnectionStatus inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/ConnectionStatus.test.jsx > ConnectionStatus > polls the backend on an interval
+An update to ConnectionStatus inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | src/components/ConnectionStatus.test.jsx > ConnectionStatus > polls the backend on an interval
+An update to ConnectionStatus inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to ConnectionStatus inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/components/ConnectionStatus.test.jsx > ConnectionStatus > shows connected when the backend is reachable 36ms
+ ✓ src/components/ConnectionStatus.test.jsx > ConnectionStatus > shows disconnected when the backend is unreachable 16ms
+ ✓ src/components/ConnectionStatus.test.jsx > ConnectionStatus > polls the backend on an interval 14ms
+ ✓ src/components/AuthGate.test.jsx > AuthGate > shows a loader while auth state resolves 38ms
+ ✓ src/components/AuthGate.test.jsx > AuthGate > renders children when the auth requirement is met 4ms
+ ✓ src/components/AuthGate.test.jsx > AuthGate > redirects anonymous users away from a protected route 8ms
+ ✓ src/components/AuthGate.test.jsx > AuthGate > redirects signed-in users away from an anon-only route 14ms
+ ✓ src/components/AuthGate.test.jsx > AuthGate > falls back to a default redirect target 17ms
+
+ Test Files  11 passed (11)
+      Tests  87 passed (87)
+   Start at  04:28:52
+   Duration  12.49s (transform 8.00s, setup 4.10s, import 28.87s, tests 17.02s, environment 20.35s)
+
+ % Coverage report from istanbul
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   84.74 |    80.15 |   82.03 |   88.37 |                   
+ components        |     100 |    92.85 |     100 |     100 |                   
+  AuthGate.jsx     |     100 |    88.88 |     100 |     100 | 21,31             
+ ...nents/features |   89.18 |    93.05 |   85.71 |   91.42 |                   
+  ...ratorForm.jsx |   84.61 |     92.3 |      75 |   91.66 | 218               
+  LeadsTable.jsx   |   92.85 |    86.36 |     100 |    92.3 | 16                
+  VerifierTab.jsx  |      90 |      100 |   85.71 |      90 | 215               
+ components/layout |   78.57 |    92.59 |   57.14 |   78.57 |                   
+  Sidebar.jsx      |   78.57 |    92.59 |   57.14 |   78.57 | 90-131,261        
+ services          |   93.54 |    71.42 |     100 |   93.22 |                   
+  api.js           |   93.54 |    71.42 |     100 |   93.22 | 8,19,27,91        
+ views             |   80.99 |    72.39 |   79.66 |   85.97 |                   
+  Dashboard.jsx    |   79.93 |    71.62 |   78.94 |   85.03 | ...1045,1070,1097 
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 84.74% ( 400/472 )
+Branches     : 80.15% ( 307/383 )
+Functions    : 82.03% ( 137/167 )
+Lines        : 88.37% ( 365/413 )
+================================================================================
