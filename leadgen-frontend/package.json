@@ -2,12 +2,14 @@
   "name": "leadgen-frontend",
   "private": true,
   "version": "0.0.0",
+  "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "test": "vitest run --coverage"
   },
   "dependencies": {
     "axios": "^1.13.5",
@@ -15,27 +17,35 @@
     "firebase": "^12.9.0",
     "framer-motion": "^12.34.0",
     "lucide-react": "^0.564.0",
+    "next": "^15.5.25",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router-dom": "^7.13.0",
     "react-toastify": "^11.0.5",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "@vitest/coverage-istanbul": "^4.1.11",
+    "@vitest/coverage-v8": "^4.0.16",
     "autoprefixer": "^10.4.24",
     "eslint": "^9.39.1",
+    "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "jsdom": "^25.0.1",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
-    "vite": "^8.0.0-beta.13"
+    "vite": "^7.2.7",
+    "vitest": "^4.0.16"
   },
   "overrides": {
-    "vite": "^8.0.0-beta.13"
+    "vite": "^7.2.7"
   }
 }
