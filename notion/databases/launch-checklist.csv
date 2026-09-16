@@ -1,0 +1,7 @@
+Item,Area,Owner,Status,Acceptance Criteria
+Run backend tests,Quality,Engineering,Pending,"pytest passes with target coverage gate"
+Run frontend tests,Quality,Engineering,Pending,"Vitest and ESLint pass"
+Review secrets,Security,Engineering,Pending,"No credentials or runtime logs tracked"
+Review README,Documentation,Product,Pending,"Setup, architecture, animation, Notion, and Figma links are accurate"
+Review Figma assets,Design,Design,Pending,"Landing, dashboard, mobile, and components mockups are approved"
+Review Notion import,Product,Product,Pending,"CSV databases and pages import into Notion cleanly"
