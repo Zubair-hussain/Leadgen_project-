@@ -4,3 +4,21 @@
 **/.env
 key.txt
 *.rar
+*.log
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+dist/
+node_modules/
+credentials.json
+backend/credentials.json
+backend/settings_dump.txt
+backend/views_dump.txt
+backend/leads/admin_dump.txt
+
+# Keep the logs/ folder but ignore its log files
+logs/*.log
