@@ -1,0 +1,7 @@
+Task,Area,Priority,Owner,Status,Evidence,Done Criteria
+Audit security settings,Security,High,Engineering,Done,records/security-audit.md,"Secrets removed and production settings hardened"
+Add backend tests,Quality,High,Engineering,Done,backend/leads/tests,"Core API and service tests exist"
+Add frontend tests,Quality,High,Engineering,Done,leadgen-frontend/src/**/*.test.jsx,"Critical UI flows covered"
+Add CI workflows,DevOps,High,Engineering,Done,.github/workflows,"CI checks lint and tests without deploy"
+Create Notion workspace,Product,Medium,Product,In progress,notion/,"Importable pages and CSV databases exist"
+Create Figma handoff,Design,Medium,Design,In progress,figma/assets/,"Visual mockups and design specs exist"
