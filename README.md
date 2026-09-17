@@ -395,7 +395,4 @@ quality gates (tests, coverage, lint, migration-drift), and the PR workflow.
 
 Released under the [MIT License](LICENSE). Third-party dependencies retain their
 own licenses.
-
 ---
-
-Tooling and docs assembled with [Claude Code](https://claude.com/claude-code).
