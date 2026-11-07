@@ -1,10 +1,11 @@
-# Vercel deploys ONLY the static HTML site:
-#   index.html, blog/**, robots.txt, sitemap.xml  (+ vercel.json config)
-# Everything else in this monorepo is excluded from the upload.
+# This repo holds three Vercel projects, each with its own Root Directory:
+#   backend/           -> API project
+#   leadgen-frontend/  -> dashboard project
+#   (repo root)        -> optional static landing page. Do NOT keep a project on the repo root:
+#                         it would publish every folder as static files. Delete it or give it its own folder.
+# This file therefore must NOT exclude backend/ or leadgen-frontend/ (it did, which broke their builds).
 
-# Applications & tooling
-backend/
-leadgen-frontend/
+# Tooling
 n8n/
 .github/
 .git/
