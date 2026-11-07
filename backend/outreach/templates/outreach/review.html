@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review draft</title>
+{% include "outreach/_style.html" %}
+</head>
+<body>
+<main>
+{% if fatal %}
+  <h1>Review draft</h1>
+  <div class="note bad">{{ fatal }}</div>
+{% else %}
+  <h1>Review outreach email</h1>
+  <div class="muted">Nothing is sent until you approve it. Status: <strong>{{ message.get_status_display }}</strong></div>
+
+  {% if notice %}<div class="note {% if ok %}ok{% else %}bad{% endif %}" role="status">{{ notice }}</div>{% endif %}
+
+  {% if problems %}
+  <div class="note bad"><strong>Must fix before approval</strong>
+    <ul>{% for p in problems %}<li>{{ p }}</li>{% endfor %}</ul>
+  </div>
+  {% elif editable %}
+  <div class="note ok">Safety and humanizer checks passed.</div>
+  {% endif %}
+
+  {% if tips %}
+  <div class="note warn"><strong>Humanizer suggestions</strong>
+    <ul>{% for t in tips %}<li>{{ t }}</li>{% endfor %}</ul>
+  </div>
+  {% endif %}
+
+  <div class="card meta">
+    <span class="muted">To</span><span>{{ message.to_email }}</span>
+    {% if message.lead %}<span class="muted">Lead</span><span>{{ message.lead.category }}{% if message.lead.location %} · {{ message.lead.location }}{% endif %}</span>{% endif %}
+    <span class="muted">Words</span><span>{{ words }} (aim for 120 or fewer)</span>
+  </div>
+
+  {% if editable %}
+  <form method="post" class="card">
+    <label for="subject">Subject</label>
+    <input id="subject" name="subject" maxlength="200" value="{{ message.subject }}" required>
+    <label for="body">Body</label>
+    <textarea id="body" name="body" required>{{ message.body }}</textarea>
+    <div class="muted">The unsubscribe line is added automatically when it sends.</div>
+    <div class="actions">
+      <button class="primary" name="action" value="approve">Approve and queue</button>
+      <button name="action" value="save">Save changes</button>
+      <button class="danger" name="action" value="reject" formnovalidate>Reject</button>
+    </div>
+  </form>
+  {% endif %}
+
+  <div class="card">
+    <div class="muted" style="margin-bottom:8px">What the recipient will see</div>
+    <div class="meta" style="margin-bottom:12px"><span class="muted">Subject</span><span>{{ message.subject }}</span></div>
+    <pre>{{ preview }}</pre>
+  </div>
+{% endif %}
+</main>
+</body>
+</html>
