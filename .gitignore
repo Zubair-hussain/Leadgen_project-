@@ -22,3 +22,6 @@ backend/leads/admin_dump.txt
 
 # Keep the logs/ folder but ignore its log files
 logs/*.log
+
+# Vercel env files hold real secrets
+**/.env.vercel
