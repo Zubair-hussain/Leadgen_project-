@@ -39,6 +39,27 @@ const GeneratorForm = ({ form, setForm, busy, handleGenerate, togglePlatform }) 
       description: "Local business data"
     },
     {
+      id: "yelp",
+      icon: Target,
+      label: "Yelp",
+      color: "from-red-500 to-red-600",
+      description: "US & AU local businesses"
+    },
+    {
+      id: "nextdoor",
+      icon: MapPin,
+      label: "Nextdoor",
+      color: "from-green-500 to-emerald-600",
+      description: "Neighbourhood businesses"
+    },
+    {
+      id: "truelocal",
+      icon: Globe,
+      label: "True Local",
+      color: "from-amber-500 to-orange-600",
+      description: "Australian word of mouth"
+    },
+    {
       id: "apify",
       icon: Sparkles,
       label: "Professional",
