@@ -7,6 +7,10 @@ const nextConfig = {
   images: { unoptimized: true },
   // Trailing slashes make static hosting/deep links behave predictably.
   trailingSlash: true,
+  // Never ship source maps or the framework banner; minified, mangled bundles only.
+  productionBrowserSourceMaps: false,
+  poweredByHeader: false,
+  compiler: { removeConsole: { exclude: ['error'] } },
 };
 
 export default nextConfig;
