@@ -1,0 +1,137 @@
+name: Deploy apps (Vercel)
+
+# Every push to main deploys what changed: the backend API and/or the dashboard, both on Vercel's free plan.
+# Use this OR Vercel's own Git integration, not both (you would deploy twice).
+#
+# Repo secrets (Settings -> Secrets and variables -> Actions):
+#   VERCEL_TOKEN                 vercel.com -> Account Settings -> Tokens
+#   VERCEL_ORG_ID                from .vercel/project.json after `vercel link` (the "orgId")
+#   VERCEL_BACKEND_PROJECT_ID    the backend project's "projectId" (Root Directory = backend)
+#   VERCEL_FRONTEND_PROJECT_ID   the dashboard project's "projectId" (Root Directory = leadgen-frontend)
+#   DATABASE_URL, SECRET_KEY     optional: if set, migrations run automatically after each backend deploy
+# If VERCEL_TOKEN is missing, every job skips cleanly.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - id: filter
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "backend=true" >> "$GITHUB_OUTPUT"; echo "frontend=true" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          changed=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || echo "backend/ leadgen-frontend/")
+          echo "$changed" | grep -q '^backend/' && echo "backend=true" >> "$GITHUB_OUTPUT" || echo "backend=false" >> "$GITHUB_OUTPUT"
+          echo "$changed" | grep -q '^leadgen-frontend/' && echo "frontend=true" >> "$GITHUB_OUTPUT" || echo "frontend=false" >> "$GITHUB_OUTPUT"
+
+  backend:
+    name: Test, migrate and deploy backend
+    needs: changes
+    if: needs.changes.outputs.backend == 'true'
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_BACKEND_PROJECT_ID }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    steps:
+      - name: Check secrets
+        if: ${{ env.VERCEL_TOKEN == '' || env.VERCEL_PROJECT_ID == '' }}
+        run: echo "::notice::VERCEL_TOKEN / VERCEL_BACKEND_PROJECT_ID not set, skipping backend deploy."
+
+      - uses: actions/checkout@v4
+        if: ${{ env.VERCEL_TOKEN != '' && env.VERCEL_PROJECT_ID != '' }}
+
+      - uses: actions/setup-python@v5
+        if: ${{ env.VERCEL_TOKEN != '' && env.VERCEL_PROJECT_ID != '' }}
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: backend/requirements-dev.txt
+
+      - name: Run tests (a failing test stops the deploy)
+        if: ${{ env.VERCEL_TOKEN != '' && env.VERCEL_PROJECT_ID != '' }}
+        working-directory: backend
+        run: |
+          pip install -r requirements-dev.txt
+          python -m pytest -q --no-cov
+
+      - name: Apply database migrations
+        if: ${{ env.VERCEL_TOKEN != '' && env.VERCEL_PROJECT_ID != '' && env.DATABASE_URL != '' }}
+        working-directory: backend
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DEBUG: 'False'
+          ALLOWED_HOSTS: localhost
+        run: python manage.py migrate --noinput
+
+      - uses: actions/setup-node@v4
+        if: ${{ env.VERCEL_TOKEN != '' && env.VERCEL_PROJECT_ID != '' }}
+        with:
+          node-version: '20'
+
+      - name: Deploy backend to production
+        if: ${{ env.VERCEL_TOKEN != '' && env.VERCEL_PROJECT_ID != '' }}
+        run: |
+          npm install -g vercel@latest
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+          vercel build --prod --token="$VERCEL_TOKEN"
+          vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+
+  frontend:
+    name: Test and deploy dashboard
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_FRONTEND_PROJECT_ID }}
+    steps:
+      - name: Check secrets
+        if: ${{ env.VERCEL_TOKEN == '' || env.VERCEL_PROJECT_ID == '' }}
+        run: echo "::notice::VERCEL_TOKEN / VERCEL_FRONTEND_PROJECT_ID not set, skipping dashboard deploy."
+
+      - uses: actions/checkout@v4
+        if: ${{ env.VERCEL_TOKEN != '' && env.VERCEL_PROJECT_ID != '' }}
+
+      - uses: actions/setup-node@v4
+        if: ${{ env.VERCEL_TOKEN != '' && env.VERCEL_PROJECT_ID != '' }}
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: leadgen-frontend/package-lock.json
+
+      - name: Run tests (a failing test stops the deploy)
+        if: ${{ env.VERCEL_TOKEN != '' && env.VERCEL_PROJECT_ID != '' }}
+        working-directory: leadgen-frontend
+        run: |
+          npm ci
+          npx vitest run
+
+      - name: Deploy dashboard to production
+        if: ${{ env.VERCEL_TOKEN != '' && env.VERCEL_PROJECT_ID != '' }}
+        run: |
+          npm install -g vercel@latest
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+          vercel build --prod --token="$VERCEL_TOKEN"
+          vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
