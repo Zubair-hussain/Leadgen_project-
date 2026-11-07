@@ -9,6 +9,8 @@ omit =
     leads/admin.py
     leads/apps.py
     leads/services.py
+    outreach/admin.py
+    outreach/management/commands/gmail_authorize.py
 
 [report]
 exclude_lines =
