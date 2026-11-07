@@ -210,8 +210,8 @@ GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
 GEMINI_MODEL = os.getenv('GEMINI_MODEL', 'gemini-3.8-flash')
 
 # Outreach. See docs/outreach.md for setup.
-# "smtp" sends from your own mailbox (Hostinger by default); "gmail" uses the Gmail API.
-OUTREACH_TRANSPORT = os.getenv('OUTREACH_TRANSPORT', 'smtp').strip().lower()
+# "gmail" (default) sends from thezubairh@gmail.com through the Gmail API; "smtp" is for a hosted mailbox.
+OUTREACH_TRANSPORT = os.getenv('OUTREACH_TRANSPORT', 'gmail').strip().lower()
 OUTREACH_FROM_EMAIL = os.getenv('OUTREACH_FROM_EMAIL', 'thezubairh@gmail.com')
 OUTREACH_FROM_NAME = os.getenv('OUTREACH_FROM_NAME', 'Zubair Hussain')
 OUTREACH_SMTP_HOST = os.getenv('OUTREACH_SMTP_HOST', 'smtp.hostinger.com')
