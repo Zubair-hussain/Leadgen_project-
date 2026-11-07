@@ -29,9 +29,6 @@ redis==6.4.0
 whitenoise==6.9.0
 gunicorn==25.1.0
 
-# Development helpers (not in production)
-django-debug-toolbar==6.2.0
-
 # APIs
 serpapi==0.1.5
 apify-client==2.5.1
@@ -44,11 +41,3 @@ django-ratelimit==4.1.0
 
 # Authentication
 firebase-admin==7.1.0
-
-# Quality gates
-pytest==9.0.2
-pytest-django==4.11.1
-pytest-cov==7.0.0
-coverage==7.13.0
-pylint==3.3.9
-pylint-django==2.6.1
