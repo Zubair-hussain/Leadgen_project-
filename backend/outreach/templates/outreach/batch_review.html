@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review batch</title>
+{% include "outreach/_style.html" %}
+<style>
+  details { border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin-top:10px; background:var(--card); }
+  summary { cursor:pointer; display:flex; gap:10px; align-items:center; overflow-wrap:anywhere; }
+  summary input { width:auto; flex:none; }
+  textarea { min-height:140px; }
+  .tag { font-size:12px; padding:2px 8px; border-radius:99px; flex:none; }
+</style>
+</head>
+<body>
+<main>
+{% if fatal %}
+  <h1>Review batch</h1>
+  <div class="note bad">{{ fatal }}</div>
+{% else %}
+  <h1>Review {{ items|length }} outreach email{{ items|length|pluralize }}</h1>
+  <div class="muted">One decision for the whole batch. Status: <strong>{{ batch.get_status_display }}</strong></div>
+
+  {% if notice %}<div class="note {% if ok %}ok{% else %}bad{% endif %}" role="status">{{ notice|linebreaksbr }}</div>{% endif %}
+  {% if batch.summary and not notice %}<div class="note warn">{{ batch.summary|linebreaksbr }}</div>{% endif %}
+
+  {% if editable and batch.auto_send_at %}
+  <div class="note warn">If you do not decide by <strong>{{ batch.auto_send_at|date:"D j M, H:i" }} UTC</strong>, the auto-send policy runs.
+    It only sends an email when every check is certain, including Gemini's confident approval and a business (not personal) address.
+    Anything doubtful is held back.</div>
+  {% endif %}
+
+  {% if editable %}
+  <form method="post">
+    <div class="actions">
+      <button class="primary" name="action" value="approve">Approve all ticked ({{ items|length }})</button>
+      <button class="danger" name="action" value="reject" formnovalidate>Reject whole batch</button>
+    </div>
+    {% for item in items %}
+    <details>
+      <summary>
+        <input type="checkbox" name="include" value="{{ item.message.pk }}" checked aria-label="Include {{ item.message.to_email }}">
+        <strong>{{ item.message.to_email }}</strong>
+        {% if item.problems %}<span class="tag bad">needs fixing</span>{% elif item.tips %}<span class="tag warn">suggestions</span>{% else %}<span class="tag ok">checks passed</span>{% endif %}
+      </summary>
+      {% for p in item.problems %}<div class="note bad">{{ p }}</div>{% endfor %}
+      {% for t in item.tips %}<div class="note warn">{{ t }}</div>{% endfor %}
+      <label for="subject_{{ item.message.pk }}">Subject</label>
+      <input id="subject_{{ item.message.pk }}" name="subject_{{ item.message.pk }}" maxlength="200" value="{{ item.message.subject }}">
+      <label for="body_{{ item.message.pk }}">Body</label>
+      <textarea id="body_{{ item.message.pk }}" name="body_{{ item.message.pk }}">{{ item.message.body }}</textarea>
+    </details>
+    {% endfor %}
+    <div class="muted" style="margin-top:12px">Untick an email to drop it. The unsubscribe line is added automatically when it sends.</div>
+    <div class="actions">
+      <button class="primary" name="action" value="approve">Approve all ticked ({{ items|length }})</button>
+      <button class="danger" name="action" value="reject" formnovalidate>Reject whole batch</button>
+    </div>
+  </form>
+  {% else %}
+    {% for item in items %}
+    <div class="card"><strong>{{ item.message.to_email }}</strong> <span class="muted">· {{ item.message.get_status_display }}</span>
+      {% if item.message.hold_reason %}<div class="note warn">Held: {{ item.message.hold_reason }}</div>{% endif %}
+      <div class="muted" style="margin-top:6px">{{ item.message.subject }}</div></div>
+    {% endfor %}
+  {% endif %}
+{% endif %}
+</main>
+</body>
+</html>
