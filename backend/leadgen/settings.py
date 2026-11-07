@@ -95,8 +95,10 @@ WSGI_APPLICATION = 'leadgen.wsgi.application'
 
 def _database_from_url(url):
     """Render/Heroku style DATABASE_URL -> Django settings (no extra dependency)."""
-    from urllib.parse import unquote, urlparse
+    from urllib.parse import parse_qsl, unquote, urlparse
     parsed = urlparse(url)
+    # Keep SSL settings from the query string (Neon requires sslmode=require).
+    extra = {k: v for k, v in parse_qsl(parsed.query) if k in ('sslmode', 'channel_binding', 'sslrootcert')}
     return {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': parsed.path.lstrip('/'),
@@ -105,7 +107,7 @@ def _database_from_url(url):
         'HOST': parsed.hostname or '',
         'PORT': str(parsed.port or 5432),
         'CONN_MAX_AGE': 0 if ON_VERCEL else 60,
-        'OPTIONS': {'connect_timeout': 10},
+        'OPTIONS': {'connect_timeout': 10, **extra},
     }
 
 
