@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import api, { clearTokens } from "../services/api";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
+import OutreachTab from "../components/features/OutreachTab";
 
 const logout = () => {
   clearTokens();
@@ -844,6 +845,7 @@ const META={
   leads:    {eye:"Data Warehouse",    title:"Leads Hub",         sub:"Your verified repository of potential high-value clients."},
   verifier: {eye:"Verification Suite",title:"Bulk Verifier",     sub:"Professional-grade email authenticity verification toolkit."},
   sender:   {eye:"Gmail Sender",      title:"Sender Options",    sub:"Selected sender identity for verified lead outreach preparation."},
+  outreach: {eye:"Gmail Outreach",    title:"Outreach",          sub:"Draft, approve and send personal emails within safe limits."},
 };
 
 export default function Dashboard(){
@@ -1055,6 +1057,7 @@ export default function Dashboard(){
     {id:"leads",    label:"Leads Hub",  I:Ic.DB,     badge:totalLeads},
     {id:"verifier", label:"Verifier",   I:Ic.Shield, badge:null},
     {id:"sender",   label:"Sender",     I:Ic.Mail,   badge:null},
+    {id:"outreach", label:"Outreach",   I:Ic.Mail,   badge:null},
   ];
   const SEC=[
     {label:"Performance",I:Ic.Trend},
@@ -1122,6 +1125,7 @@ export default function Dashboard(){
         {tab==="leads"    &&<Leads leads={leads} onVerify={onVerify} onDelete={onDel} verifying={verifying} onExport={onExport}/>}
         {tab==="verifier" &&<Verifier/>}
         {tab==="sender"   &&<SenderOptions senderEmail={form.sender_email || SENDER_EMAIL}/>}
+        {tab==="outreach" &&<OutreachTab leads={leads}/>}
       </main>
     </div>
   );
