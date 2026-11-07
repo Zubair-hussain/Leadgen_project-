@@ -1,0 +1,25 @@
+name: Outreach scheduler
+# Vercel has no background workers, so this calls the backend every 5 minutes (free for public repos).
+# Repo secrets needed: BACKEND_URL (https://your-backend.vercel.app) and CRON_SECRET.
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: outreach-tick
+  cancel-in-progress: false
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Call the backend
+        env:
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$BACKEND_URL" ] || [ -z "$CRON_SECRET" ]; then echo "Secrets not set yet, skipping."; exit 0; fi
+          curl --fail-with-body --silent --show-error --max-time 90 -X POST \
+            -H "Authorization: Bearer $CRON_SECRET" "$BACKEND_URL/api/outreach/cron/tick/"
