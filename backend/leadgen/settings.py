@@ -8,6 +8,8 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = env_bool('DEBUG', False)
+# True when running as a Vercel serverless function (no Celery/Redis/workers there).
+ON_VERCEL = bool(os.getenv('VERCEL'))
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 if not SECRET_KEY:
@@ -17,9 +19,10 @@ if not SECRET_KEY:
         SECRET_KEY = required_env('SECRET_KEY')
 
 ALLOWED_HOSTS = env_list('ALLOWED_HOSTS', 'localhost,127.0.0.1')
-# Render sets this to the service's public hostname.
-if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
-    ALLOWED_HOSTS.append(os.environ['RENDER_EXTERNAL_HOSTNAME'])
+# Render / Vercel set these to the deployment's public hostname.
+for _host_var in ('RENDER_EXTERNAL_HOSTNAME', 'VERCEL_URL', 'VERCEL_PROJECT_PRODUCTION_URL'):
+    if os.getenv(_host_var):
+        ALLOWED_HOSTS.append(os.environ[_host_var])
 # Behind an HTTPS reverse proxy (Caddy/nginx on the Oracle server): trust its X-Forwarded-Proto
 # and the public origin, so review links neither redirect-loop nor fail CSRF.
 CSRF_TRUSTED_ORIGINS = env_list('CSRF_TRUSTED_ORIGINS', '')
@@ -101,7 +104,7 @@ def _database_from_url(url):
         'PASSWORD': unquote(parsed.password or ''),
         'HOST': parsed.hostname or '',
         'PORT': str(parsed.port or 5432),
-        'CONN_MAX_AGE': 60,
+        'CONN_MAX_AGE': 0 if ON_VERCEL else 60,
         'OPTIONS': {'connect_timeout': 10},
     }
 
@@ -149,6 +152,11 @@ USE_TZ = True
 # Celery Configuration
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://redis:6379/0')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
+if ON_VERCEL:
+    # No workers on Vercel: tasks run inline, and a GitHub Actions cron calls /api/outreach/cron/tick/.
+    CELERY_BROKER_URL = 'memory://'
+    CELERY_RESULT_BACKEND = 'cache+memory://'
+    CELERY_TASK_ALWAYS_EAGER = True
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -174,8 +182,13 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STORAGES = {
     'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
-    'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'},
+    'staticfiles': {'BACKEND': (
+        'django.contrib.staticfiles.storage.StaticFilesStorage' if ON_VERCEL
+        else 'whitenoise.storage.CompressedManifestStaticFilesStorage')},
 }
+WHITENOISE_USE_FINDERS = ON_VERCEL  # no collectstatic step on Vercel: serve admin files straight from the apps
+# Shared secret for the scheduler (GitHub Actions / Vercel Cron) calling /api/outreach/cron/tick/.
+CRON_SECRET = os.getenv('CRON_SECRET', '')
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -393,7 +406,7 @@ SIMPLE_JWT = {
 }
 
 FIREBASE_PROJECT_ID = os.getenv('FIREBASE_PROJECT_ID') or os.getenv('VITE_FIREBASE_PROJECT_ID')
-LEADGEN_SYNC_REQUESTS = env_bool('LEADGEN_SYNC_REQUESTS', DEBUG)
+LEADGEN_SYNC_REQUESTS = env_bool('LEADGEN_SYNC_REQUESTS', DEBUG or ON_VERCEL)
 MAX_VERIFY_UPLOAD_BYTES = int(os.getenv('MAX_VERIFY_UPLOAD_BYTES', str(5 * 1024 * 1024)))
 
 if DEBUG:
