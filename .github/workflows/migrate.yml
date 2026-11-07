@@ -1,0 +1,23 @@
+name: Database migrate
+# Run by hand (Actions tab -> Database migrate -> Run workflow) after the first deploy and after model changes.
+# Repo secrets needed: DATABASE_URL (your Neon connection string) and SECRET_KEY.
+on:
+  workflow_dispatch:
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r backend/requirements.txt
+      - name: Apply migrations
+        working-directory: backend
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DEBUG: "False"
+          ALLOWED_HOSTS: localhost
+        run: python manage.py migrate --noinput
