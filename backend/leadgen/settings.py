@@ -315,7 +315,8 @@ SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
 DATA_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024
 # The admin lives at a secret path in production (set ADMIN_URL=some-long-random-string/).
-ADMIN_URL = os.getenv('ADMIN_URL', 'admin/' if DEBUG else 'admin/')
+# Blank or missing falls back to admin/ (a blank path would let the admin swallow every URL).
+ADMIN_URL = ((os.getenv('ADMIN_URL') or '').strip().strip('/') or 'admin') + '/'
 REFERRER_POLICY = 'same-origin'
 
 # Logging - Console only for Docker
