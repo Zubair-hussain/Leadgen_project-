@@ -176,7 +176,7 @@ class GenerateLeadsView(APIView):
         except Exception as e:
             logger.error(f"Lead generation error: {str(e)}", exc_info=True)
             return Response({
-                "error": f"Failed to generate leads: {str(e)}",
+                "error": "Failed to generate leads.",
                 "details": "Check your API keys and try with different search parameters"
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
