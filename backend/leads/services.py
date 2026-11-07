@@ -10,7 +10,9 @@ from functools import lru_cache
 from email_validator import validate_email, EmailNotValidError
 from django.db import IntegrityError
 from urllib.parse import unquote, urljoin, urlparse
+from leadgen import gemini
 from .models import Lead
+from . import directories, regions
 
 logger = logging.getLogger(__name__)
 
@@ -708,9 +710,6 @@ class LeadGenerator:
             return leads_batch
 
         try:
-            from google import genai
-            client = genai.Client(api_key=self.gemini_key)
-
             content_to_analyze = "\n---\n".join([
                 f"ID: {i} | Source: {l['source']} | Content: {l['problem_statement']}"
                 for i, l in enumerate(leads_batch)
@@ -738,17 +737,10 @@ class LeadGenerator:
             Return a valid JSON array of indices ONLY (e.g., [0, 2, 5]). Do not include markdown formatting or extra text.
             """
 
-            response = client.models.generate_content(
-                model='gemini-2.0-flash',
-                contents=prompt
-            )
-
-            raw_text = response.text.strip()
-            if '```' in raw_text:
-                raw_text = re.search(r'\[.*\]', raw_text, re.DOTALL).group()
-
-            valid_indices = json.loads(raw_text)
-            return [leads_batch[i] for i in valid_indices if i < len(leads_batch)]
+            valid_indices = gemini.generate(prompt, json_output=True, temperature=0)
+            if not isinstance(valid_indices, list):
+                raise gemini.GeminiError('Gemini did not return a list of indices.')
+            return [leads_batch[i] for i in valid_indices if isinstance(i, int) and 0 <= i < len(leads_batch)]
 
         except Exception as e:
             logger.error(f"AI filtering error: {e}")
@@ -774,6 +766,10 @@ class LeadGenerator:
         # Iterate through requested platforms
         for platform in platforms:
             if platform in ('google-maps', 'apify', 'google-cse'):
+                continue
+            if platform in directories.DIRECTORY_SOURCES:
+                logger.info(f"[LeadGen] Directory discovery: {platform}")
+                leads_to_save.extend(directories.discover(self, platform, category, target_location))
                 continue
                 
             # 1) Primary Priority: SerpAPI
@@ -917,6 +913,9 @@ class LeadGenerator:
                         "category": category,
                         "service": category,
                         "location": lead['location'],
+                        "country": regions.detect_country(
+                            lead.get('country', ''), lead['location'], lead.get('phone', ''),
+                            email, lead['link']),
                         "link": lead['link'],
                         "problem_statement": lead['problem_statement'],
                         "is_verified": True,
