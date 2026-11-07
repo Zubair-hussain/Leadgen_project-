@@ -3,10 +3,13 @@
 import axios from 'axios';
 import { auth } from '../firebase';
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL;
-if (!baseURL) {
-  throw new Error('NEXT_PUBLIC_API_URL is required');
-}
+// The deployed backend, built in so the dashboard always finds the API with no Vercel setting.
+// Production builds always use it (a stale NEXT_PUBLIC_API_URL in Vercel cannot break it).
+// In development and tests, NEXT_PUBLIC_API_URL can still point somewhere else, e.g. http://localhost:8000/api.
+const DEFAULT_API_URL = 'https://leadgen-backend-nu.vercel.app/api';
+const baseURL = (
+  process.env.NODE_ENV === 'production' ? DEFAULT_API_URL : (process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_URL)
+).replace(/\/+$/, '');
 
 const ACCESS_KEY = 'leadgen_jwt_access';
 const REFRESH_KEY = 'leadgen_jwt_refresh';
