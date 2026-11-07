@@ -1,0 +1,18 @@
+<table role="presentation" class="zh-card" cellpadding="0" cellspacing="0" border="0" bgcolor="{{ brand.ink }}" style="background-color:{{ brand.ink }};background-image:radial-gradient(120% 140% at 100% 100%, {{ brand.glow }} 0%, rgba(200,20,30,0.18) 38%, rgba(10,10,10,0) 70%), linear-gradient(135deg, {{ brand.ink }} 0%, #120708 100%);border-radius:14px;border:1px solid {{ brand.edge }};border-left:3px solid {{ brand.red }};">
+  <tr>
+    <td class="zh-logo" valign="middle" style="padding:18px 18px 18px 20px;">
+      <a href="{{ portfolio_url }}" style="text-decoration:none;font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-style:italic;font-size:34px;line-height:1;color:{{ brand.paper }};letter-spacing:-0.5px;">ZH<span style="color:{{ brand.red }};">.</span></a>
+    </td>
+    <td class="zh-rule" valign="middle" style="padding:16px 0;">
+      <div style="width:1px;height:46px;background-color:{{ brand.edge }};background-image:linear-gradient(180deg, rgba(200,20,30,0) 0%, {{ brand.red }} 50%, rgba(200,20,30,0) 100%);"></div>
+    </td>
+    <td valign="middle" style="padding:16px 22px 16px 18px;">
+      <div style="font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;color:{{ brand.paper }};line-height:1.3;">{{ name }}</div>
+      <div style="font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;color:#a39f9a;line-height:1.6;padding-top:3px;">{{ title }}</div>
+      {% if portfolio_url %}<div style="padding-top:7px;font-family:'JetBrains Mono',Menlo,Consolas,monospace;font-size:12px;line-height:1.4;">
+        <span style="color:{{ brand.red }};">&#9679;</span>
+        <a href="{{ portfolio_url }}" style="color:{{ brand.paper }};text-decoration:none;border-bottom:1px solid {{ brand.red }};">{{ portfolio_label }}</a>
+      </div>{% endif %}
+    </td>
+  </tr>
+</table>
