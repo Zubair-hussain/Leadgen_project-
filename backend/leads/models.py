@@ -46,6 +46,11 @@ class Lead(models.Model):
         blank=True,
         help_text="Geographic location of the lead"
     )
+    country = models.CharField(
+        max_length=2,
+        blank=True,
+        help_text="ISO country code, used to apply regional email law (US, UK/EU, AU)"
+    )
     link = models.URLField(
         blank=True,
         help_text="URL to the original source or profile"
