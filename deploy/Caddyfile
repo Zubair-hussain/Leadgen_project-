@@ -1,0 +1,21 @@
+# Oracle Always Free VM (Ampere A1, 12 GB RAM). Caddy terminates HTTPS and is the only public entry point.
+# Replace the two hostnames. Backend listens on 127.0.0.1:8000, frontend container on 127.0.0.1:8080.
+
+app.example.com {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		-Server
+	}
+	# Only /api/* reaches Django. Block the admin unless it is on your secret ADMIN_URL path.
+	@api path /api/*
+	handle @api {
+		reverse_proxy 127.0.0.1:8000
+	}
+	handle {
+		reverse_proxy 127.0.0.1:8080
+	}
+	# Drop obvious scanners.
+	@bots header User-Agent *sqlmap* *nikto* *masscan* *python-requests* *curl*
+	respond @bots 403
+}
