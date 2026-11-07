@@ -1,0 +1,77 @@
+# Render Blueprint: Dashboard -> New -> Blueprint -> pick this repo.
+# Backend (Django API) + worker (Celery + scheduler in one process) + Postgres + Redis (Key Value).
+# The worker must run all day to send the 10-20 daily emails and read replies, so it needs a paid plan.
+services:
+  - type: web
+    name: leadgen-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: starter
+    healthCheckPath: /api/health/
+    dockerCommand: >-
+      sh -c "python manage.py migrate --noinput &&
+      python manage.py collectstatic --noinput &&
+      gunicorn leadgen.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120"
+    envVars: &shared
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase: {name: leadgen-db, property: connectionString}
+      - key: CELERY_BROKER_URL
+        fromService: {type: keyvalue, name: leadgen-redis, property: connectionString}
+      - key: CELERY_RESULT_BACKEND
+        fromService: {type: keyvalue, name: leadgen-redis, property: connectionString}
+      - key: USE_X_FORWARDED_PROTO
+        value: "True"
+      - key: TIME_ZONE
+        value: UTC
+      - key: ADMIN_URL
+        generateValue: true
+      - key: OUTREACH_DRY_RUN
+        value: "True"          # flip to False in the dashboard only when you are ready to send for real
+      - key: OUTREACH_FROM_EMAIL
+        value: thezubairh@gmail.com
+      - key: OUTREACH_NOTIFY_EMAIL
+        value: thezubairh@gmail.com
+      - key: OUTREACH_SMTP_HOST
+        value: smtp.gmail.com
+      - key: OUTREACH_IMAP_HOST
+        value: imap.gmail.com
+      - key: OUTREACH_IMAP_SENT_FOLDER
+        value: "[Gmail]/Sent Mail"
+      # Secrets: type these in the Render dashboard, never in this file.
+      - {key: CORS_ALLOWED_ORIGINS, sync: false}      # https://your-app.vercel.app
+      - {key: CSRF_TRUSTED_ORIGINS, sync: false}      # https://leadgen-api.onrender.com
+      - {key: OUTREACH_REVIEW_BASE_URL, sync: false}  # https://leadgen-api.onrender.com
+      - {key: OUTREACH_SMTP_PASSWORD, sync: false}    # Gmail app password
+      - {key: OUTREACH_SENDER_ADDRESS, sync: false}   # your postal address
+      - {key: SERPAPI_KEY, sync: false}
+      - {key: GEMINI_API_KEY, sync: false}
+      - {key: YELP_API_KEY, sync: false}
+      - {key: FIREBASE_PROJECT_ID, sync: false}
+
+  - type: worker
+    name: leadgen-worker
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: starter
+    dockerCommand: >-
+      celery -A leadgen worker -B -l INFO --concurrency=2
+      --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    envVars: *shared
+
+  - type: keyvalue
+    name: leadgen-redis
+    plan: free
+    maxmemoryPolicy: noeviction
+    ipAllowList: []
+
+databases:
+  - name: leadgen-db
+    plan: free
+    databaseName: leadgen
+    user: leadgen_user
