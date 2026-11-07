@@ -1,8 +1,9 @@
 from django.urls import path
 
-from . import review, views
+from . import cron, review, views
 
 urlpatterns = [
+    path('cron/tick/', cron.tick, name='outreach-cron-tick'),
     path('status/', views.OutreachStatusView.as_view(), name='outreach-status'),
     path('messages/', views.OutreachMessageListView.as_view(), name='outreach-messages'),
     path('messages/<int:pk>/', views.OutreachMessageDetailView.as_view(), name='outreach-message-detail'),
