@@ -11,7 +11,7 @@ from django.utils import timezone
 
 from leads.services import EmailVerifier
 
-from . import branding, compliance, humanizer, mailer, playbook, research
+from . import branding, compliance, humanizer, mailer, playbook, research, unsubscribe
 from .models import OutreachMessage, SendThrottle, Suppression
 
 logger = logging.getLogger(__name__)
@@ -115,7 +115,10 @@ def mark_queued(message, now=None, auto=False):
 
 def in_send_window(now=None, region=''):
     """Business hours (and weekdays) in the lead's own region, so Australia is emailed in its morning."""
-    zone = zoneinfo.ZoneInfo(compliance.timezone_name(region)) if region else None
+    if settings.OUTREACH_SEND_TIMEZONE:
+        zone = zoneinfo.ZoneInfo(settings.OUTREACH_SEND_TIMEZONE)
+    else:
+        zone = zoneinfo.ZoneInfo(compliance.timezone_name(region)) if region else None
     local = timezone.localtime(now or timezone.now(), zone)
     if settings.OUTREACH_WEEKDAYS_ONLY and local.weekday() >= 5:
         return False
@@ -238,12 +241,14 @@ def process_queue(now=None):
                 logger.info("DRY RUN: would send %s to %s", message.pk, message.to_email)
             else:
                 lead = message.lead
+                unsubscribe_url = unsubscribe.url_for(message)
                 text, html = branding.compose(
                     message.subject, message.body,
-                    region=compliance.message_region(message), source=lead.source if lead else '')
+                    region=compliance.message_region(message), source=lead.source if lead else '',
+                    unsubscribe_url=unsubscribe_url)
                 message_id, thread_id = mailer.send_message(
                     normalize(message.to_email), message.subject, text, html=html,
-                    message_id=message.rfc_message_id, **thread_headers(message),
+                    message_id=message.rfc_message_id, unsubscribe_url=unsubscribe_url, **thread_headers(message),
                 )
         except mailer.ERRORS as exc:
             logger.exception("Outreach send failed for message %s", message.pk)

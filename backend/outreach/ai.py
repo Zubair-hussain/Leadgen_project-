@@ -44,7 +44,11 @@ Facts you may use (use NOTHING else, invent nothing):
 Shape (this is what made the cold emails in the Cold Email Hall of Fame get answers):
 1. Open with THEM, not you: one line about their business from the facts above (name, trade, town, rating).
 2. One line on who you are, in plain words.
-3. One specific, useful idea for their website or online presence that fits the facts.
+3. One specific, useful idea from ONE of {sender}'s services, the one that fits the facts best:
+   {services}
+   No website listed: offer a simple site design and layout. Already has a website: offer a free quick
+   security check of the site (outdated software, missing HTTPS or security headers) or a quick SEO check
+   of how they show up on Google. Never claim you already ran the check or found a problem.
 4. End with ONE easy question they can answer in a few words, for example whether they would like to see the idea.
 About five sentences in total. Short sentences, natural rhythm, like a person typing to another person.
 
@@ -141,6 +145,7 @@ def write_draft_text(lead, attempts=3):
             sender=sender, category=lead.category or 'local business', location=lead.location or 'your area',
             portfolio=settings.OUTREACH_PORTFOLIO_URL or 'none', extra=extra,
             research_facts=research_facts, greeting=greeting,
+            services=", ".join(settings.OUTREACH_SERVICES) or "website design",
         )
         result = gemini.generate(prompt, json_output=True, temperature=0.7)
         if not isinstance(result, dict):

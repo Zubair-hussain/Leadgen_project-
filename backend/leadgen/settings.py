@@ -178,6 +178,14 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'outreach.tasks.process_followups',
         'schedule': float(os.getenv('OUTREACH_INBOX_SYNC_SECONDS', '300')),
     },
+    'outreach-autopilot': {
+        'task': 'outreach.tasks.run_autopilot',
+        'schedule': 1800.0,
+    },
+    'outreach-weekly-report': {
+        'task': 'outreach.tasks.weekly_report',
+        'schedule': 900.0,  # checks every 15 min; sends once, on Sunday evening
+    },
 }
 
 STATIC_URL = 'static/'
@@ -212,10 +220,16 @@ GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
 GEMINI_MODEL = os.getenv('GEMINI_MODEL', 'gemini-3.8-flash')
 
 # Outreach. See docs/outreach.md for setup.
-# "gmail" (default) sends from thezubairh@gmail.com through the Gmail API; "smtp" is for a hosted mailbox.
+# "gmail" (default) sends from thezubairh@gmail.com through the Gmail API; "smtp" is for a hosted mailbox;
+# "resend" sends from your own domain (hello@zubairhussain.xyz) through Resend's API.
 OUTREACH_TRANSPORT = os.getenv('OUTREACH_TRANSPORT', 'gmail').strip().lower()
 OUTREACH_FROM_EMAIL = os.getenv('OUTREACH_FROM_EMAIL', 'thezubairh@gmail.com')
 OUTREACH_FROM_NAME = os.getenv('OUTREACH_FROM_NAME', 'Zubair Hussain')
+# Replies and mailto opt-outs go here. Use a mailbox you read (and that IMAP below watches).
+OUTREACH_REPLY_TO = os.getenv('OUTREACH_REPLY_TO', '')
+RESEND_API_KEY = os.getenv('RESEND_API_KEY', '')
+# Resend -> Webhooks -> signing secret (whsec_...). Bounces and spam complaints are suppressed at once.
+RESEND_WEBHOOK_SECRET = os.getenv('RESEND_WEBHOOK_SECRET', '')
 OUTREACH_SMTP_HOST = os.getenv('OUTREACH_SMTP_HOST', 'smtp.hostinger.com')
 OUTREACH_SMTP_PORT = int(os.getenv('OUTREACH_SMTP_PORT', '465'))
 OUTREACH_SMTP_SSL = env_bool('OUTREACH_SMTP_SSL', True)  # 465 = SSL; set False for 587 + STARTTLS
@@ -285,6 +299,27 @@ OUTREACH_BATCH_MAX = int(os.getenv('OUTREACH_BATCH_MAX', '100'))
 OUTREACH_AUTO_SEND_ENABLED = env_bool('OUTREACH_AUTO_SEND_ENABLED', False)
 OUTREACH_AUTO_SEND_AFTER_HOURS = float(os.getenv('OUTREACH_AUTO_SEND_AFTER_HOURS', '12'))
 OUTREACH_AUTO_SEND_MIN_CONFIDENCE = float(os.getenv('OUTREACH_AUTO_SEND_MIN_CONFIDENCE', '0.9'))
+# Autopilot: find new leads once a day and let Gemini draft emails for them (they still go through
+# the review batch / auto-send policy and every safety check). Targets: "category|location; ..."
+OUTREACH_AUTOPILOT_ENABLED = env_bool('OUTREACH_AUTOPILOT_ENABLED', False)
+OUTREACH_AUTOPILOT_OWNER = os.getenv('OUTREACH_AUTOPILOT_OWNER', '')  # username or email of your account
+OUTREACH_AUTOPILOT_TARGETS = os.getenv('OUTREACH_AUTOPILOT_TARGETS', '')
+OUTREACH_AUTOPILOT_PLATFORMS = env_list('OUTREACH_AUTOPILOT_PLATFORMS', 'google-maps')
+OUTREACH_AUTOPILOT_DRAFTS_PER_DAY = int(os.getenv('OUTREACH_AUTOPILOT_DRAFTS_PER_DAY', '15'))
+OUTREACH_AUTOPILOT_DRAFTS_PER_RUN = int(os.getenv('OUTREACH_AUTOPILOT_DRAFTS_PER_RUN', '2'))
+# The daily routine (hunt, then drafts) starts at this hour in this time zone. Default 07:00 Pakistan time.
+OUTREACH_AUTOPILOT_TIMEZONE = os.getenv('OUTREACH_AUTOPILOT_TIMEZONE', 'Asia/Karachi')
+OUTREACH_AUTOPILOT_HOUR = int(os.getenv('OUTREACH_AUTOPILOT_HOUR', '7'))
+# Empty = send in each lead's own local business hours (best replies). Or one zone for everyone, e.g. Asia/Karachi.
+OUTREACH_SEND_TIMEZONE = os.getenv('OUTREACH_SEND_TIMEZONE', '').strip()
+# What you offer and where people book a call. Shown in the signature card; Gemini picks the best-fitting service.
+OUTREACH_BOOKING_URL = os.getenv('OUTREACH_BOOKING_URL', 'https://calendly-booking-navy.vercel.app/')
+OUTREACH_SERVICES = env_list('OUTREACH_SERVICES', 'Website security checks,Design & layout,SEO')
+# Weekly report emailed to OUTREACH_NOTIFY_EMAIL. Weekday: 0 = Monday ... 6 = Sunday.
+OUTREACH_WEEKLY_REPORT_ENABLED = env_bool('OUTREACH_WEEKLY_REPORT_ENABLED', True)
+OUTREACH_REPORT_TIMEZONE = os.getenv('OUTREACH_REPORT_TIMEZONE', '') or TIME_ZONE
+OUTREACH_REPORT_WEEKDAY = int(os.getenv('OUTREACH_REPORT_WEEKDAY', '6'))
+OUTREACH_REPORT_HOUR = int(os.getenv('OUTREACH_REPORT_HOUR', '18'))
 OUTREACH_FREEMAIL_DOMAINS = env_list(
     'OUTREACH_FREEMAIL_DOMAINS',
     'gmail.com,googlemail.com,outlook.com,hotmail.com,hotmail.co.uk,live.com,live.co.uk,yahoo.com,'

@@ -10,9 +10,9 @@
 <style>
   a { color: {{ brand.red }}; }
   @media (max-width: 520px) {
-    .zh-card td { display: block !important; width: 100% !important; }
-    .zh-rule { display: none !important; }
-    .zh-logo { padding: 0 0 12px 0 !important; }
+    .zh-card td.zh-cell { display: block !important; width: auto !important; }
+    .zh-card td.zh-rule { display: none !important; }
+    .zh-card td.zh-logo { padding: 18px 20px 0 20px !important; }
   }
 </style>
 </head>
@@ -44,6 +44,11 @@
           <td style="padding:8px 0 0 0;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:11px;line-height:1.5;color:#8a8a8a;">{{ line }}</td>
         </tr>
         {% endfor %}
+        {% if unsubscribe_url %}
+        <tr>
+          <td style="padding:8px 0 0 0;font-family:'DM Sans',Helvetica,Arial,sans-serif;font-size:11px;line-height:1.5;color:#8a8a8a;"><a href="{{ unsubscribe_url }}" style="color:#8a8a8a;text-decoration:underline;">Unsubscribe with one click</a> <span style="color:#a8a8a8;">(you will not get any more emails from me)</span></td>
+        </tr>
+        {% endif %}
       </table>
     </td>
   </tr>

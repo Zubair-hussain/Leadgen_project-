@@ -33,3 +33,19 @@ def process_batches():
     from .batches import process_batches as run
 
     return run()
+
+
+@shared_task
+def run_autopilot():
+    """Every 30 minutes: hunt leads once a day, otherwise draft a couple of emails."""
+    from .autopilot import run_autopilot as run
+
+    return run()
+
+
+@shared_task
+def weekly_report():
+    """Every 15 minutes: emails the weekly report once, on Sunday evening."""
+    from .report import weekly_report as run
+
+    return run()

@@ -53,10 +53,11 @@ def get_access_token():
 
 
 def send_message(to_email, subject, body, list_unsubscribe=True, html=None, message_id=None,
-                 in_reply_to='', references='', thread_id=''):
+                 in_reply_to='', references='', thread_id='', unsubscribe_url=''):
     """Send an email (plain text, plus HTML when given). Returns (gmail_message_id, gmail_thread_id)."""
     mime = build_mime(to_email, subject, body, list_unsubscribe=list_unsubscribe, html=html,
-                      message_id=message_id, in_reply_to=in_reply_to, references=references)
+                      message_id=message_id, in_reply_to=in_reply_to, references=references,
+                      unsubscribe_url=unsubscribe_url)
     raw = base64.urlsafe_b64encode(mime.as_bytes()).decode('ascii')
     payload = {'raw': raw}
     if thread_id:

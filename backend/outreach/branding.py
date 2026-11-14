@@ -29,11 +29,15 @@ def signature_text():
     second = ' | '.join(part for part in (settings.OUTREACH_SENDER_TITLE, portfolio_label()) if part)
     if second:
         lines.append(second)
+    if settings.OUTREACH_SERVICES:
+        lines.append(' · '.join(settings.OUTREACH_SERVICES))
+    if settings.OUTREACH_BOOKING_URL:
+        lines.append(f'Book a 15-min call: {settings.OUTREACH_BOOKING_URL}')
     return '\n'.join(lines)
 
 
-def text_version(body, region='', source=''):
-    """Plain-text part: body, signature, then the opt-out line."""
+def text_version(body, region='', source='', unsubscribe_url=''):
+    """Plain-text part: body, signature, then the opt-out line and the legal footer."""
     parts = [body.rstrip()]
     signature = signature_text()
     if signature:
@@ -42,6 +46,8 @@ def text_version(body, region='', source=''):
     if opt_out:
         parts.append(opt_out)
     footer = compliance.footer_lines(region, source)
+    if unsubscribe_url:
+        footer = footer + [f'Unsubscribe with one click: {unsubscribe_url}']
     if footer:
         parts.append('\n'.join(footer))
     return '\n\n'.join(parts)
@@ -62,11 +68,13 @@ def _signature_context():
         'title': settings.OUTREACH_SENDER_TITLE,
         'portfolio_url': settings.OUTREACH_PORTFOLIO_URL,
         'portfolio_label': portfolio_label(),
+        'services': settings.OUTREACH_SERVICES,
+        'booking_url': settings.OUTREACH_BOOKING_URL,
         'brand': BRAND,
     }
 
 
-def html_version(subject, body, region='', source=''):
+def html_version(subject, body, region='', source='', unsubscribe_url=''):
     paragraphs = [p.strip() for p in re.split(r'\n\s*\n', body.strip()) if p.strip()]
     return render_to_string('outreach/email/cold.html', {
         'subject': subject,
@@ -74,6 +82,7 @@ def html_version(subject, body, region='', source=''):
         'signature': settings.OUTREACH_SIGNATURE,
         'opt_out': settings.OUTREACH_OPT_OUT_LINE.strip(),
         'footer_lines': compliance.footer_lines(region, source),
+        'unsubscribe_url': unsubscribe_url,
         **_signature_context(),
     })
 
@@ -83,7 +92,7 @@ def signature_html():
     return render_to_string('outreach/email/_signature.html', _signature_context())
 
 
-def compose(subject, body, region='', source=''):
+def compose(subject, body, region='', source='', unsubscribe_url=''):
     """Return (text, html). html is None when OUTREACH_HTML_EMAIL is off."""
-    return (text_version(body, region, source),
-            html_version(subject, body, region, source) if settings.OUTREACH_HTML_EMAIL else None)
+    return (text_version(body, region, source, unsubscribe_url),
+            html_version(subject, body, region, source, unsubscribe_url) if settings.OUTREACH_HTML_EMAIL else None)

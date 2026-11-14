@@ -1,6 +1,8 @@
 name: Outreach scheduler
-# Vercel has no background workers, so this calls the backend every 5 minutes (free for public repos).
+# Vercel has no background workers, so this calls the backend on a timer (free for public repos).
 # Repo secrets needed: BACKEND_URL (https://your-backend.vercel.app) and CRON_SECRET.
+#  - every 5 minutes: send due emails, batch drafts, read replies, Sunday report (when due)
+#  - every 30 minutes: autopilot (find leads once a day, otherwise draft a couple of emails)
 on:
   schedule:
     - cron: "*/5 * * * *"
@@ -23,3 +25,9 @@ jobs:
           if [ -z "$BACKEND_URL" ] || [ -z "$CRON_SECRET" ]; then echo "Secrets not set yet, skipping."; exit 0; fi
           curl --fail-with-body --silent --show-error --max-time 90 -X POST \
             -H "Authorization: Bearer $CRON_SECRET" "$BACKEND_URL/api/outreach/cron/tick/"
+          # Autopilot on minutes 0-4 and 30-34 of each hour (GitHub may delay a run by a few minutes).
+          minute=$(date -u +%M)
+          if [ $((10#$minute % 30)) -lt 5 ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            curl --fail-with-body --silent --show-error --max-time 90 -X POST \
+              -H "Authorization: Bearer $CRON_SECRET" "$BACKEND_URL/api/outreach/cron/autopilot/"
+          fi

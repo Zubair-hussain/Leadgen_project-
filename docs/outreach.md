@@ -1,5 +1,7 @@
 # Outreach setup
 
+> **Sending from hello@zubairhussain.xyz with Resend, the daily autopilot and the Sunday report:** see [resend-autopilot-setup.md](resend-autopilot-setup.md).
+
 The Outreach tab lets you draft a personal email to a verified lead, approve it,
 and have it sent from **zubair@zubairhussain.xyz** (your Hostinger mailbox, over SMTP)
 within safe limits. Nothing is sent without your approval, and **dry-run mode is on

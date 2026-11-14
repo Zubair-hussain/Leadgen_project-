@@ -75,6 +75,9 @@ def footer_lines(region, source=''):
     lines = [f'Sent by {sender}.']
     where = SOURCE_NAMES.get(source, '')
     origin = f'your public listing on {where}' if where else 'publicly listed business details'
+    if region == 'US':
+        # CAN-SPAM: a commercial email must say it is one, plainly.
+        lines.append('This is a one-to-one business offer. Reply "unsubscribe" and I will not email you again.')
     if region in ('UK', 'EU'):
         lines.append(f'I wrote to this business address because it appears in {origin}, '
                      'and I think my work could be relevant to you (legitimate interest). '

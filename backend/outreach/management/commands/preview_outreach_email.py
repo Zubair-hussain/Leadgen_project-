@@ -4,14 +4,14 @@ from django.core.management.base import BaseCommand
 
 from outreach import branding, playbook
 
-SAMPLE_SUBJECT = "bright smile dental online"
-SAMPLE_BODY = """Hi Bright Smile Dental team,
+SAMPLE_SUBJECT = "quick check for summit dental"
+SAMPLE_BODY = """Hi Summit Dental team,
 
-Your 4.8 stars from 120 reviews in Leeds say patients love you, but Google shows no website for the clinic yet.
+Your 4.9 stars from 210 reviews in Austin show patients trust you, and your website is often the first place they look before booking.
 
-I'm Zubair, a developer who builds fast, simple sites for local practices. A one page site with your hours, reviews and a booking button would let new patients find you before they call.
+I'm Zubair, a developer who helps local clinics keep their sites safe and easy to find. I can run a free quick security check on your site, looking at outdated software, HTTPS and security headers, and send you a short plain English summary.
 
-Would you like me to send over a quick mock up?
+Would you like me to run it this week?
 
 Regards,
 Zubair"""
@@ -38,6 +38,7 @@ class Command(BaseCommand):
         parser.add_argument('--out', default='outreach_email_preview.html')
         parser.add_argument('--subject', default=SAMPLE_SUBJECT)
         parser.add_argument('--body-file', default='', help="Plain-text file with the body to preview")
+        parser.add_argument('--region', default='US', help="US, UK, EU or AU: which legal footer to show")
         parser.add_argument('--signature-only', action='store_true',
                             help="Write only the ZH. signature card, for Hostinger webmail")
 
@@ -50,8 +51,10 @@ class Command(BaseCommand):
         body = Path(options['body_file']).read_text(encoding='utf-8') if options['body_file'] else SAMPLE_BODY
         subject = options['subject']
         out = Path(options['out'])
-        out.write_text(branding.html_version(subject, body), encoding='utf-8')
-        graded = playbook.score(subject, body, {'name': 'Bright Smile Dental', 'location': 'Leeds'})
+        unsubscribe_url = 'https://leadgen-backend-nu.vercel.app/api/outreach/unsubscribe/preview/'
+        out.write_text(branding.html_version(subject, body, region=options['region'], source='google-maps',
+                                             unsubscribe_url=unsubscribe_url), encoding='utf-8')
+        graded = playbook.score(subject, body, {'name': 'Summit Dental', 'location': 'Austin'})
         self.stdout.write(f"Wrote {out.resolve()}")
         self.stdout.write(f"Playbook score: {graded['score']}/100")
         for note in graded['notes']:

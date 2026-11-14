@@ -49,10 +49,11 @@ def connect():
 
 
 def send_message(to_email, subject, body, list_unsubscribe=True, html=None, message_id=None,
-                 in_reply_to='', references='', thread_id=''):
+                 in_reply_to='', references='', thread_id='', unsubscribe_url=''):  # pylint: disable=unused-argument
     """Send one email. Returns (message_id, '') to match the Gmail client's (id, thread) shape."""
     mime = build_mime(to_email, subject, body, list_unsubscribe=list_unsubscribe, html=html,
-                      message_id=message_id, in_reply_to=in_reply_to, references=references)
+                      message_id=message_id, in_reply_to=in_reply_to, references=references,
+                      unsubscribe_url=unsubscribe_url)
     server = connect()
     try:
         refused = server.send_message(mime)

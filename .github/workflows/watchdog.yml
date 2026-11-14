@@ -1,0 +1,126 @@
+name: Watchdog (uptime, security, Lighthouse, law changes)
+
+# Every 15 min: is everything up? One email when something goes down, one when it is back.
+# Every Sunday 03:00 UTC (08:00 Pakistan): leaks, TLS, security headers, SPF/DKIM/DMARC, Cloudflare
+# settings, vulnerable packages, new actively-exploited CVEs in the stack (CISA KEV), Lighthouse,
+# and changes to US / EU / UK / AU email law and Gmail / Yahoo / Outlook sender-rule pages.
+# You are emailed only when something needs you. Without RESEND_API_KEY a GitHub issue is opened
+# instead (GitHub emails you about it).
+#
+# Settings -> Secrets and variables -> Actions:
+#   Variable WATCH_URLS    https://your-frontend.vercel.app,https://your-backend.vercel.app/,https://zubairhussain.xyz,https://calendly-booking-navy.vercel.app/
+#   Variable EMAIL_DOMAIN  zubairhussain.xyz
+#   Secret   RESEND_API_KEY, ALERT_EMAIL (your Gmail)
+#   Secret   CLOUDFLARE_API_TOKEN (read-only: Zone Settings Read) + CLOUDFLARE_ZONE_ID   (optional)
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+    - cron: "0 3 * * 0"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "uptime or weekly"
+        default: weekly
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: watchdog-${{ github.event.schedule || inputs.mode }}
+  cancel-in-progress: false
+
+env:
+  WATCH_URLS: ${{ vars.WATCH_URLS }}
+  EMAIL_DOMAIN: ${{ vars.EMAIL_DOMAIN }}
+  RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+  ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
+  ALERT_FROM: ${{ vars.ALERT_FROM }}
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  uptime:
+    if: github.event.schedule == '*/15 * * * *' || inputs.mode == 'uptime'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: ops
+      - name: Check every watched URL
+        run: |
+          if [ -z "$WATCH_URLS" ]; then echo "Set the WATCH_URLS variable to enable."; exit 0; fi
+          python3 ops/watchdog.py uptime
+
+  weekly:
+    if: github.event.schedule == '0 3 * * 0' || (github.event_name == 'workflow_dispatch' && inputs.mode != 'uptime')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Restore watchdog memory (law page fingerprints, CVEs already reported)
+        uses: actions/cache/restore@v4
+        with:
+          path: watchdog-state.json
+          key: watchdog-state-${{ github.run_id }}
+          restore-keys: watchdog-state-
+
+      - name: Dependency audits
+        continue-on-error: true
+        run: |
+          mkdir -p audit
+          python -m pip install --quiet pip-audit
+          pip-audit -r backend/requirements.txt -f json -o audit/pip-audit.json || true
+          (cd leadgen-frontend && npm audit --json > ../audit/npm-audit.json) || true
+
+      - name: Lighthouse (performance, accessibility, best practices, SEO)
+        continue-on-error: true
+        run: |
+          mkdir -p lighthouse
+          [ -z "$WATCH_URLS" ] && exit 0
+          npm install --silent -g lighthouse@12
+          i=0
+          for url in $(echo "$WATCH_URLS" | tr ',' ' '); do
+            i=$((i+1))
+            lighthouse "$url" --quiet --output=json --output-path="lighthouse/report-$i.json" \
+              --chrome-flags="--headless=new --no-sandbox" --only-categories=performance,accessibility,best-practices,seo || true
+          done
+
+      - name: Secret scan (gitleaks)
+        id: gitleaks
+        continue-on-error: true
+        uses: gitleaks/gitleaks-action@v2
+
+      - name: Run the watchdog
+        env:
+          STATE_FILE: watchdog-state.json
+          LIGHTHOUSE_DIR: lighthouse
+          AUDIT_DIR: audit
+          GITLEAKS_OUTCOME: ${{ steps.gitleaks.outcome }}
+        run: python3 ops/watchdog.py weekly
+
+      - name: Save watchdog memory
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: watchdog-state.json
+          key: watchdog-state-${{ github.run_id }}
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: watchdog-reports
+          path: |
+            lighthouse/
+            audit/
+          if-no-files-found: ignore
